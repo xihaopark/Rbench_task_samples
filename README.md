@@ -19,9 +19,13 @@ Each case contains:
 |---|------|-------------------------------|
 | [01](cases/case_01_derive_vars_dt.md) | `admiral::derive_vars_dt()` | analysis date variables from SDTM `--DTC` |
 | [02](cases/case_02_derive_vars_dtm.md) | `admiral::derive_vars_dtm()` | analysis datetime variables from SDTM `--DTC` |
-| [03](cases/case_03_derive_vars_dy.md) | `admiral::derive_vars_dy()` | study-day variables relative to treatment start |
-| [04](cases/case_04_derive_var_trtdurd.md) | `admiral::derive_var_trtdurd()` | treatment duration after treatment dates exist |
-| [05](cases/case_05_derive_vars_computed.md) | `admiral::derive_vars_computed()` | parameterized baseline/computed-variable derivation pattern |
+| [03](cases/case_03_compute_age_years.md) | `admiral::compute_age_years()` | age-unit normalization used before ADSL age derivations |
+| [04](cases/case_04_compute_bmi.md) | `admiral::compute_bmi()` | BMI baseline value logic used in ADSL body-measure derivations |
+| [05](cases/case_05_derive_vars_period.md) | `admiral::derive_vars_period()` | analysis-period start/end variables joined onto subject-level data |
+
+## Prompt Hygiene
+
+Cases 01-02 keep the original task family but make the benchmark contract explicit: read files from `inputs/`, and create the documented fallback columns before calling admiral. Cases 03-05 replace earlier examples whose prompts depended too heavily on hidden reference behavior or synthetic fixtures.
 
 ## Contributor Hygiene
 

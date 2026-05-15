@@ -13,9 +13,9 @@ This maps directly to the `admiral-adsl` skill's date-derivation layer. In an AD
 ```text
 Derive **imputed Date** variables (`*DT`) from partial-date character `*DTC`. Load `library(admiral)` and `library(rlang)`.
 
-**Inputs:** `datase.tsv`, optional `new_vars_prefix.tsv`, `flag_imputation.tsv`.
+**Inputs:** `inputs/datase.tsv`, optional `inputs/new_vars_prefix.tsv`, optional `inputs/flag_imputation.tsv`.
 
-**Computation:** Pick a `*DTC` column (`ASTDTC`, `AESTDTC`, ...) or create a default, then `admiral::derive_vars_dt(datase, new_vars_prefix = ..., dtc = !!rlang::sym(dtc_col), flag_imputation = ...)`.
+**Computation:** Read from the `inputs/` directory. Pick an existing `*DTC` column (`ASTDTC`, `AESTDTC`, `MHSTDTC`, `EXSTDTC`), or create fallback `ASTDTC <- format(Sys.Date(), "%Y-%m-%d")`. Then call `admiral::derive_vars_dt(datase, new_vars_prefix = ..., dtc = !!rlang::sym(dtc_col), flag_imputation = ...)`. Treat invalid `flag_imputation` fixture values as the reference default `"auto"`.
 
 **Required outputs for grading:** `outputs/result.csv`
 ```

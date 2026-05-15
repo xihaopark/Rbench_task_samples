@@ -15,7 +15,7 @@ Derive **datetime** variables (`*DTM`) from ISO-like `*DTC` strings. Load `libra
 
 **Inputs:** `inputs/datase.tsv`.
 
-**Computation:** Select a `*DTC` column or default `ASTDTC`, then `admiral::derive_vars_dtm(datase, new_vars_prefix = "AST", dtc = !!rlang::sym(dtc_col))`.
+**Computation:** Select an existing `*DTC` column (`ASTDTC`, `AESTDTC`, `LBDTC`). If none exists, first create fallback `ASTDTC <- format(Sys.time(), "%Y-%m-%dT%H:%M")`, then call `admiral::derive_vars_dtm(datase, new_vars_prefix = "AST", dtc = !!rlang::sym(dtc_col))`.
 
 **Required outputs for grading:** `outputs/result.csv`
 ```
