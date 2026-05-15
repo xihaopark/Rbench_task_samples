@@ -1,31 +1,32 @@
 # Rbench Task Samples
 
-Curated RBioBench clinical-track task samples for discussing how benchmark tasks relate to agent skills, especially `RConsortium/pharma-skills`.
+Curated RBioBench clinical-track task samples for discussing how benchmark tasks relate to LLM and agent capability boundaries.
 
-## Current Focus
+This repository is now organized around a vetted shortlist rather than the earlier five-case draft. The previous `derive_vars_dt` first case is intentionally removed from the showcase set because it depends on a run-date fallback and is not useful for discussion.
 
-The first group is ordered to match lower-level admiral primitives that appear inside the `pharma-skills/admiral-adsl` workflow.
+## Current Shortlist
 
-Each case contains:
+- 5 `admiral` tasks with clear clinical or ADaM relevance.
+- 15 additional `clinical_pilot` tasks from any package.
+- Selection goal: prompts should be defensible, failures should reflect model or agent limitations rather than obvious benchmark defects.
 
-- task prompt
-- input files
-- reference code and reference output
-- LLM code and LLM output
+See [docs/clinical_shortlist.md](docs/clinical_shortlist.md) for the current candidate list and exclusion criteria.
 
-## Admiral / ADSL Skill Comparison Cases
+## Selection Rules
 
-| # | Task | Why it maps to `admiral-adsl` |
-|---|------|-------------------------------|
-| [01](cases/case_01_derive_vars_dt.md) | `admiral::derive_vars_dt()` | analysis date variables from SDTM `--DTC` |
-| [02](cases/case_02_derive_vars_dtm.md) | `admiral::derive_vars_dtm()` | analysis datetime variables from SDTM `--DTC` |
-| [03](cases/case_03_compute_age_years.md) | `admiral::compute_age_years()` | age-unit normalization used before ADSL age derivations |
-| [04](cases/case_04_compute_bmi.md) | `admiral::compute_bmi()` | BMI baseline value logic used in ADSL body-measure derivations |
-| [05](cases/case_05_derive_vars_period.md) | `admiral::derive_vars_period()` | analysis-period start/end variables joined onto subject-level data |
+Prefer tasks that test:
 
-## Prompt Hygiene
+- clinical derivation semantics, such as treatment-emergent flags, on-treatment flags, TTE parameters, period datasets, joins, and transposed ADaM structures;
+- R-specific execution boundaries, especially tidy-eval, quosures, list-like objects, S3/S4 objects, RDS serialization, and strict CSV schemas;
+- package-specific workflows where the prompt and reference code make the expected behavior inspectable.
 
-Cases 01-02 keep the original task family but make the benchmark contract explicit: read files from `inputs/`, and create the documented fallback columns before calling admiral. Cases 03-05 replace earlier examples whose prompts depended too heavily on hidden reference behavior or synthetic fixtures.
+Exclude tasks that are mainly:
+
+- run-date or current-time fallbacks;
+- `summary.csv`-only false failures where the substantive `result.csv` already matches;
+- smoke tests, print/list/quote wrappers, or trivial scalar wrappers;
+- non-exported function calls unless the prompt explicitly says to use the internal helper or fallback;
+- placeholder fixtures that erase the clinical meaning of the task.
 
 ## Contributor Hygiene
 
