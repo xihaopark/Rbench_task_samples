@@ -1,51 +1,68 @@
-# Case 19 - `pharmaverse/gridify/get_layouts`
-**Package:** `gridify`  **Function:** `get_layouts`  **Level:** `L1`  **LLM sample:** GPT-5.1 direct LLM pass5, `sample_00`  **Evaluation status:** `FAIL`, pass=`False`, score=`0.0`
+# Case 05 - `pharmaverse/admiral/compute_rr`
+**Package:** `admiral`  **Function:** `compute_rr`  **Level:** `L1`  **LLM sample:** GPT-5.1 direct LLM pass5, `sample_00`  **Evaluation status:** `FAIL`, pass=`False`, score=`0.0`
 **Evaluation message:** Failed at case_embedded
 
 ## Task Prompt
 
 ```text
-List **gridify** table layouts. Load `library(gridify)`.
+Convert heart rate (bpm) to **RR interval (ms)** for ECG-style derivations. Load `library(admiral)`.
 
-**Computation:** **`gridify::get_layouts()`**.
+**Inputs:** `inputs/hr.tsv` with one numeric column named `hr`.
+
+**Computation:** Read the `hr` vector and call `admiral::compute_rr(hr)`.
 
 **Required outputs for grading (exact paths):**
-- `outputs/result.csv` (and `outputs/result.rds` when the reference writes both)
+- `outputs/result.csv` with columns `hr`, `result`
+- `outputs/summary.csv` with columns `n_rows`, `n_cols`, `col_names`
 
-Create `outputs/` with `dir.create('outputs', showWarnings=FALSE)` if needed.
-For CSV use `write.csv(..., row.names=FALSE)` unless you must preserve row names to match the reference.
-Follow `solution.R` for any additional `summary.csv` in the long template.
+Create `outputs/` with `dir.create('outputs', showWarnings=FALSE)` and write CSV with `write.csv(..., row.names=FALSE)`.
 ```
+
+## Prompt Repair Note
+
+This display prompt lightly clarifies the output schema and includes `summary.csv`, because the reference output and evaluator compare both files. The computation and inputs are unchanged from the stable task.
 
 ## Input Files
 
-**`inputs/gridify.tsv`**
+**`inputs/hr.tsv`**
 
 ```tsv
-gridify
-"yes"
-"no"
-"true"
-"false"
-"active"
+hr
+0.1
+1.5
+10.0
+100.0
+1000.0
 ```
 
 ## Reference Code
 
 ```r
-suppressPackageStartupMessages(library(gridify))
+suppressPackageStartupMessages(library(admiral))
 
+suppressPackageStartupMessages(library(rlang))
 # 1. 读取输入数据 / Read input data
-# No input files required
+hr_path <- file.path("inputs", "hr.tsv")
+if (!file.exists(hr_path)) {
+  stop("hr.tsv is required input")
+}
+hr_df <- read.delim(hr_path, check.names = FALSE, stringsAsFactors = FALSE)
+hr <- as.numeric(hr_df$hr)
 
 # 3. 执行函数实现 / Execute function implementation
-result <- gridify::get_layouts()
+hr_path <- file.path("inputs", "hr.tsv")
+if (!file.exists(hr_path)) {
+  stop("hr.tsv is required input")
+}
+hr_df <- read.delim(hr_path, check.names = FALSE, stringsAsFactors = FALSE)
+hr <- if(ncol(hr_df) > 0 && nrow(hr_df) > 0) hr_df[[1]] else hr_df
+result <- admiral::compute_rr(hr)
 
 # 4. 创建结果数据框 / Create result dataframe
 # 将函数结果与输入数据合并（如果可能）
 if (is.vector(result) || is.numeric(result) || is.character(result)) {
   result_df <- data.frame(
-    id = seq_along(result),
+    hr = hr,
     result = result,
     stringsAsFactors = FALSE)
   } else if (is.data.frame(result)) {
@@ -105,32 +122,38 @@ if (exists("summary_stats")) {
 **`outputs/result.csv`**
 
 ```csv
-"id","result"
-1,"complex_layout"
-2,"simple_layout"
-3,"pharma_layout_base"
-4,"pharma_layout_A4"
-5,"pharma_layout_letter"
+"hr","result"
+0.1,6e+05
+1.5,40000
+10,6000
+100,600
+1000,60
 ```
 
 **`outputs/summary.csv`**
 
 ```csv
 "n_rows","n_cols","col_names"
-5,2,"id, result"
+5,2,"hr, result"
 ```
 
 ## LLM Code
 
 ```r
-library(gridify)
+library(admiral)
 
 dir.create("outputs", showWarnings = FALSE)
 
-layouts <- gridify::get_layouts()
+hr <- read.delim("inputs/hr.tsv", header = TRUE, sep = "\t", stringsAsFactors = FALSE)
 
-write.csv(layouts, "outputs/result.csv", row.names = FALSE)
-saveRDS(layouts, "outputs/result.rds")
+rr <- admiral::compute_rr(hr[[1]])
+
+result <- data.frame(
+  HR = hr[[1]],
+  RR = rr
+)
+
+write.csv(result, "outputs/result.csv", row.names = FALSE)
 ```
 
 ## LLM Execution Output
@@ -138,13 +161,11 @@ saveRDS(layouts, "outputs/result.rds")
 **`stdout.txt`**
 
 ```text
-
 ```
 
 **`stderr.txt`**
 
 ```text
-
 ```
 
 ## LLM Output Files
@@ -152,31 +173,28 @@ saveRDS(layouts, "outputs/result.rds")
 **`outputs/result.csv`**
 
 ```csv
-"x"
-"complex_layout"
-"simple_layout"
-"pharma_layout_base"
-"pharma_layout_A4"
-"pharma_layout_letter"
+"HR","RR"
+0.1,6e+05
+1.5,40000
+10,6000
+100,600
+1000,60
 ```
-
-**`outputs/result.rds`**
-
-_RDS binary artifact generated; size: 107 bytes._
 
 ## LLM Metadata
 
 ```json
 {
-  "task_id": "pharmaverse/gridify/get_layouts",
-  "package": "gridify",
+  "task_id": "pharmaverse/admiral/compute_rr",
+  "package": "admiral",
   "track_id": "clinical_pilot",
-  "content_tag_id": "support",
-  "flow_tag_id": "report",
+  "content_tag_id": "clinical",
+  "flow_tag_id": "transform",
   "scoring_mode_id": "strict",
-  "code_sha256": "8e2e2e125a88378a7393fcbe44e67e3336a93184ea627321a145a10f4bb19c50",
+  "code_sha256": "e0f3d9508ecee536ae65e14c9928ab0ef3640dc9143c6e2def0c9443bfba13ab",
+  "raw_response": "```r\nlibrary(admiral)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nhr <- read.delim(\"inputs/hr.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\n\nrr <- admiral::compute_rr(hr[[1]])\n\nresult <- data.frame(\n  HR = hr[[1]],\n  RR = rr\n)\n\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
   "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:15:46.064647",
+  "timestamp": "2026-03-30T16:11:42.441506",
   "source": "direct_llm"
 }
 ```
@@ -185,7 +203,7 @@ _RDS binary artifact generated; size: 107 bytes._
 
 ```json
 {
-  "task_id": "pharmaverse/gridify/get_layouts",
+  "task_id": "pharmaverse/admiral/compute_rr",
   "sample_idx": 0,
   "model": "openai/gpt-5.1",
   "status": "FAIL",
@@ -199,7 +217,7 @@ _RDS binary artifact generated; size: 107 bytes._
       "comparison": {
         "result.csv": {
           "match": false,
-          "reason": "Shape mismatch: ref=(5, 2) vs llm=(5, 1)"
+          "reason": "Missing column: hr"
         },
         "summary.csv": {
           "match": false,
