@@ -7,7 +7,7 @@ This repository is now organized around a vetted shortlist rather than the earli
 ## Current Shortlist
 
 - 5 `admiral` tasks with clear clinical or ADaM relevance.
-- 15 additional `clinical_pilot` tasks from any package.
+- 15 additional `clinical study` tasks from any package.
 - Selection goal: prompts should be defensible, failures should reflect model or agent limitations rather than obvious benchmark defects.
 
 See [docs/clinical_shortlist.md](docs/clinical_shortlist.md) for the current candidate list and exclusion criteria.
