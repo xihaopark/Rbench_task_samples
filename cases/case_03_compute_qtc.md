@@ -85,7 +85,6 @@ if (!file.exists(method_path)) {
 }
 method <- read.delim(method_path, check.names = FALSE, stringsAsFactors = FALSE)
 
-# Data validation
 if (nrow(method) == 0) stop("method is empty")
 
 # Execute function implementation
