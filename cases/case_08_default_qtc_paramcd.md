@@ -232,24 +232,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/default_qtc_paramcd",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "6e3d5418ddf3c2f2c53a96f456d906cd812869d26c6dc5a81bd96f2283a059d9",
-  "raw_response": "```r\nlibrary(admiral)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nmethod <- read.delim(\n  file.path(\"inputs\", \"method.tsv\"),\n  check.names = FALSE,\n  stringsAsFactors = FALSE\n)\n\nargs_list <- list()\n\nif (\"aval\" %in% names(method)) {\n  args_list$aval <- method[[\"aval\"]]\n}\nif (\"aval2\" %in% names(method)) {\n  args_list$aval2 <- method[[\"aval2\"]]\n}\nif (\"aval3\" %in% names(method)) {\n  args_list$aval3 <- method[[\"aval3\"]]\n}\nif (\"aval4\" %in% names(method)) {\n  args_list$aval4 <- method[[\"aval4\"]]\n}\nif (\"analysis_type\" %in% names(method)) {\n  args_list$analysis_type <- method[[\"analysis_type\"]]\n}\nif (\"analysis_var\" %in% names(method)) {\n  args_list$analysis_var <- method[[\"analysis_var\"]]\n}\nif (\"analysis_var2\" %in% names(method)) {\n  args_list$analysis_var2 <- method[[\"analysis_var2\"]]\n}\nif (\"analysis_var3\" %in% names(method)) {\n  args_list$analysis_var3 <- method[[\"analysis_var3\"]]\n}\nif (\"analysis_var4\" %in% names(method)) {\n  args_list$analysis_var4 <- method[[\"analysis_var4\"]]\n}\nif (\"by_vars\" %in% names(method)) {\n  bv <- method[[\"by_vars\"]]\n  bv <- unique(bv[!is.na(bv) & nzchar(bv)])\n  if (length(bv) > 0) {\n    args_list$by_vars <- syms(bv)\n  }\n}\nif (\"method\" %in% names(method)) {\n  args_list$method <- method[[\"method\"]]\n}\nif (\"rounding\" %in% names(method)) {\n  args_list$rounding <- method[[\"rounding\"]]\n}\nif (\"decimals\" %in% names(method)) {\n  args_list$decimals <- method[[\"decimals\"]]\n}\nif (\"unit\" %in% names(method)) {\n  args_list$unit <- method[[\"unit\"]]\n}\nif (\"paramcd\" %in% names(method)) {\n  args_list$paramcd <- method[[\"paramcd\"]]\n}\nif (\"param\" %in% names(method)) {\n  args_list$param <- method[[\"param\"]]\n}\n\nresult <- do.call(admiral::default_qtc_paramcd, args_list)\n\nwrite.csv(result, file = file.path(\"outputs\", \"result.csv\"), row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:12:31.964576",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

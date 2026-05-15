@@ -180,24 +180,6 @@ write.csv(result, "outputs/result.csv", row.names = FALSE)
 1000,60
 ```
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/compute_rr",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "e0f3d9508ecee536ae65e14c9928ab0ef3640dc9143c6e2def0c9443bfba13ab",
-  "raw_response": "```r\nlibrary(admiral)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nhr <- read.delim(\"inputs/hr.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\n\nrr <- admiral::compute_rr(hr[[1]])\n\nresult <- data.frame(\n  HR = hr[[1]],\n  RR = rr\n)\n\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:11:42.441506",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

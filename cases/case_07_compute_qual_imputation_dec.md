@@ -200,24 +200,6 @@ The following objects are masked from ‘package:base’:
 1
 ```
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/compute_qual_imputation_dec",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "f9e8e71c4dd03e5a613159e5491926b743bd22615994811b7557549300357693",
-  "raw_response": "```r\nlibrary(admiral)\nlibrary(dplyr)\nlibrary(stringr)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\ndat <- read.delim(\"inputs/character_value_decimal.tsv\", stringsAsFactors = FALSE)\n\nres <- dat %>%\n  mutate(\n    character_value_decimal = str_trim(character_value_decimal),\n    dec_adj = case_when(\n      str_detect(character_value_decimal, \"\\\\.\") ~\n        1 / (10 ^ (str_length(character_value_decimal) -\n                     str_locate(character_value_decimal, \"\\\\.\")[, \"start\"])),\n      TRUE ~ 1\n    )\n  ) %>%\n  select(dec_adj)\n\nwrite.csv(res, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:11:40.773667",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

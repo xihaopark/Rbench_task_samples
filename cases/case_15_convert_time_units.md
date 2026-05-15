@@ -307,24 +307,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/convert_time_units",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "7ff3d08145ff9c38980d07bdc2003fb5f0740c329222e30cec15dec6b29c7818",
-  "raw_response": "```r\nlibrary(admiral)\n\n# Create outputs directory\ndir.create(\"outputs\", showWarnings = FALSE)\n\n# Read inputs\nmay <- read.delim(file.path(\"inputs\", \"may.tsv\"),\n                  check.names = FALSE, stringsAsFactors = FALSE)\nna_idx <- read.delim(file.path(\"inputs\", \"na_idx.tsv\"),\n                     check.names = FALSE, stringsAsFactors = FALSE)\nno <- read.delim(file.path(\"inputs\", \"no.tsv\"),\n                 check.names = FALSE, stringsAsFactors = FALSE)\nresult_in <- read.delim(file.path(\"inputs\", \"result.tsv\"),\n                        check.names = FALSE, stringsAsFactors = FALSE)\nxxtpt <- read.delim(file.path(\"inputs\", \"xxtpt.tsv\"),\n                    check.names = FALSE, stringsAsFactors = FALSE)\n\n# Helper to map textual units to admiral-supported units\nmap_unit <- function(x) {\n  recode(x,\n    \"secs\"  = \"seconds\",\n    \"mins\"  = \"minutes\",\n    \"hours\" = \"hours\",\n    \"days\"  = \"days\",\n    \"weeks\" = \"weeks\",\n    \"months\"= \"months\",\n    \"years\" = \"years\",\n    .default = x\n  )\n}\n\n# Prepare arguments for convert_time_units from result.tsv\n# Assumes columns: value, old_unit, new_unit\n# and possibly id-like/group columns carried through\nif (!all(c(\"value\", \"old_unit\", \"new_unit\") %in% names(result_in))) {\n  stop(\"result.tsv must contain columns: value, old_unit, new_unit\")\n}\n\nvalues <- result_in[[\"value\"]]\nold_units <- map_unit(result_in[[\"old_unit\"]])\nnew_units <- map_unit(result_in[[\"new_unit\"]])\n\n# Apply convert_time_units row-wise\nconverted <- mapply(\n  function(val, ou, nu) {\n    convert_time_units(\n      input = val,\n      input_unit = ou,\n      target_unit = nu\n    )\n  },\n  val = values,\n  ou = old_units,\n  nu = new_units\n)\n\n# Bind converted result back to original structure\nresult_out <- result_in\nresult_out[[\"converted\"]] <- as.numeric(converted)\n\n# Write required output\nwrite.csv(result_out, file.path(\"outputs\", \"result.csv\"), row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:12:23.955365",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

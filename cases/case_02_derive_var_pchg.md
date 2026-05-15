@@ -131,24 +131,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/derive_var_pchg",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "8d6b41e8f4d4b7e04b43130042d0cef3456492c76aa59c5efcfe33f8af9e551f",
-  "raw_response": "```r\nlibrary(admiral)\n\n# Ensure outputs directory exists\ndir.create(\"outputs\", showWarnings = FALSE)\n\n# Read input\ndat <- read.table(\n  \"inputs/dataset.tsv\",\n  header = TRUE,\n  sep = \"\\t\",\n  stringsAsFactors = FALSE,\n  check.names = FALSE\n)\n\n# Ensure AVAL exists: if not, try to infer from common value column names\nif (!\"AVAL\" %in% names(dat)) {\n  val_candidates <- c(\"AVALC\", \"VALUE\", \"VAL\", \"AVAL_NUM\")\n  val_col <- val_candidates[val_candidates %in% names(dat)]\n  if (length(val_col) == 0L) {\n    stop(\"No AVAL column found and no suitable value column to derive it from.\")\n  }\n  dat$AVAL <- as.numeric(dat[[val_col[1L]]])\n}\n\n# Ensure BASE exists: if not, try to infer from common baseline column names\nif (!\"BASE\" %in% names(dat)) {\n  base_candidates <- c(\"BASEC\", \"BASELINE\", \"BASE_VAL\")\n  base_col <- base_candidates[base_candidates %in% names(dat)]\n  if (length(base_col) == 0L) {\n    stop(\"No BASE column found and no suitable baseline column to derive it from.\")\n  }\n  dat$BASE <- as.numeric(dat[[base_col[1L]]])\n}\n\n# Derive percent change from baseline\nresult <- admiral::derive_var_pchg(dat)\n\n# Write result\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:12:58.522295",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

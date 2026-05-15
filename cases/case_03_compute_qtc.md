@@ -249,24 +249,6 @@ write.csv(result, "outputs/result.csv", row.names = FALSE)
 1000,1000,"bazett",1000
 ```
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/compute_qtc",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "1a8f2d76251e424007c2a4ef50dad445d0bd3ab102ccf9dcb7270f3e2d964010",
-  "raw_response": "```r\nlibrary(admiral)\nlibrary(admiraldev)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nqt_df <- read.table(\"inputs/qt.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\nrr_df <- read.table(\"inputs/rr.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\nmethod_df <- read.table(\"inputs/method.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\n\nqt <- qt_df$qt\nrr <- rr_df$rr\n\nadmiraldev::assert_numeric_vector(qt)\nadmiraldev::assert_numeric_vector(rr)\n\nmethod <- if (\"method\" %in% names(method_df)) method_df$method[1] else NA\nmethod <- tolower(method)\n\nif (!method %in% c(\"bazett\", \"fridericia\", \"sagie\")) {\n  method <- \"bazett\"\n}\n\nrr_sec <- rr / 1000\n\nqtc <- switch(\n  method,\n  \"bazett\" = qt / sqrt(rr_sec),\n  \"fridericia\" = qt / (rr_sec^(1/3)),\n  \"sagie\" = qt + 0.154 * (1 - rr_sec),\n  qt / sqrt(rr_sec)\n)\n\nresult <- data.frame(\n  qt = qt,\n  rr = rr,\n  method = method,\n  qtc = qtc\n)\n\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:11:37.520951",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json
