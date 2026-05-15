@@ -66,7 +66,7 @@ rr
 suppressPackageStartupMessages(library(admiral))
 suppressPackageStartupMessages(library(admiraldev))
 suppressPackageStartupMessages(library(rlang))
-# 1. 读取输入数据 / Read input data
+# Read input data
 qt_path <- file.path("inputs", "qt.tsv")
 if (!file.exists(qt_path)) {
   stop("qt.tsv is required input")
@@ -85,10 +85,10 @@ if (!file.exists(method_path)) {
 }
 method <- read.delim(method_path, check.names = FALSE, stringsAsFactors = FALSE)
 
-# 2. 数据验证
+# Data validation
 if (nrow(method) == 0) stop("method is empty")
 
-# 3. 执行函数实现 / Execute function implementation
+# Execute function implementation
 admiraldev::assert_numeric_vector(arg = qt)
 admiraldev::assert_numeric_vector(arg = rr)
 method_val <- tolower(as.character(method[[1]][1]))
@@ -102,8 +102,7 @@ formulae <- list(
 )
 result <- formulae[[method_val]]
 
-# 4. 创建结果数据框 / Create result dataframe
-# 将函数结果与输入数据合并（如果可能）
+# Create result dataframe
 if (is.vector(result) || is.numeric(result) || is.character(result)) {
   result_df <- data.frame(
     qt = qt, rr = rr,
@@ -115,7 +114,7 @@ if (is.vector(result) || is.numeric(result) || is.character(result)) {
   result_df <- data.frame(result = result, stringsAsFactors = FALSE)
 }
 
-# 5. 生成汇总统计 / Generate summary statistics
+# Generate summary statistics
 if (is.data.frame(result_df)) {
   summary_stats <- data.frame(
     n_rows = nrow(result_df),
@@ -137,7 +136,7 @@ if (is.data.frame(result_df)) {
   )
 }
 
-# 6. 保存输出 / Save outputs
+# Save outputs
 outputs_dir <- "outputs"
 dir.create(outputs_dir, showWarnings = FALSE)
 if (exists("result_df") && is.data.frame(result_df)) {

@@ -63,7 +63,7 @@ sysbp
 suppressPackageStartupMessages(library(admiral))
 
 suppressPackageStartupMessages(library(rlang))
-# 1. 读取输入数据 / Read input data
+# Read input data
 diabp_path <- file.path("inputs", "diabp.tsv")
 if (!file.exists(diabp_path)) {
   stop("diabp.tsv is required input")
@@ -83,7 +83,7 @@ if (!file.exists(hr_path)) {
 hr_df <- read.delim(hr_path, check.names = FALSE, stringsAsFactors = FALSE)
 hr <- as.numeric(hr_df$hr)
 
-# 3. 执行函数实现 / Execute function implementation
+# Execute function implementation
 sysbp_path <- file.path("inputs", "sysbp.tsv")
 if (!file.exists(sysbp_path)) {
   stop("sysbp.tsv is required input")
@@ -104,8 +104,7 @@ diabp_df <- read.delim(diabp_path, check.names = FALSE, stringsAsFactors = FALSE
 diabp <- if(ncol(diabp_df) > 0 && nrow(diabp_df) > 0) diabp_df[[1]] else diabp_df
 result <- admiral::compute_map(sysbp, hr, diabp)
 
-# 4. 创建结果数据框 / Create result dataframe
-# 将函数结果与输入数据合并（如果可能）
+# Create result dataframe
 if (is.vector(result) || is.numeric(result) || is.character(result)) {
   result_df <- data.frame(
     diabp = diabp, sysbp = sysbp,
@@ -117,7 +116,7 @@ if (is.vector(result) || is.numeric(result) || is.character(result)) {
   result_df <- data.frame(result = result, stringsAsFactors = FALSE)
 }
 
-# 4. 生成汇总统计 / Generate summary statistics
+# Generate summary statistics
 if (is.data.frame(result_df)) {
   summary_stats <- data.frame(
     n_rows = nrow(result_df),
@@ -139,7 +138,7 @@ if (is.data.frame(result_df)) {
   )
 }
 
-# 5. 保存输出 / Save outputs
+# Save outputs
 outputs_dir <- "outputs"
 dir.create(outputs_dir, showWarnings = FALSE)
 if (exists("result_df") && is.data.frame(result_df)) {

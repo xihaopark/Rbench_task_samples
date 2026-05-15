@@ -75,28 +75,28 @@ definition
 ```r
 suppressPackageStartupMessages(library(admiral))
 
-# 1. 读取输入数据
+# Read input data
 datase_path <- file.path("inputs", "datase.tsv")
 if (!file.exists(datase_path)) stop("datase.tsv is required input")
 datase <- read.delim(datase_path, check.names = FALSE, stringsAsFactors = FALSE)
 
-# 2. 确保有 AVAL
+# Ensure AVAL exists
 if (!"AVAL" %in% names(datase)) {
   val_col <- if ("value" %in% names(datase)) "value" else names(datase)[2]
   datase$AVAL <- as.numeric(datase[[val_col]])
 }
 
-# 3. 定义 categorization
+# Define categorization
 definition <- admiral::exprs(
   ~condition,     ~AVALCAT1, ~AVALCA1N,
   AVAL >= 100,    ">=100",   1,
   AVAL < 100,     "<100",    2
 )
 
-# 4. 执行函数
+# Execute function
 result <- admiral::derive_vars_cat(datase, definition = definition)
 
-# 5. 保存输出
+# Save outputs
 outputs_dir <- "outputs"
 dir.create(outputs_dir, showWarnings = FALSE)
 write.csv(result, file.path(outputs_dir, "result.csv"), row.names = FALSE)

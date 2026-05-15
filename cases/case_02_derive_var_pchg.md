@@ -39,22 +39,22 @@ id	value	group	category
 ```r
 suppressPackageStartupMessages(library(admiral))
 
-# 1. 读取输入数据
+# Read input data
 dataset_path <- file.path("inputs", "dataset.tsv")
 if (!file.exists(dataset_path)) stop("dataset.tsv is required input")
 dataset <- read.delim(dataset_path, check.names = FALSE, stringsAsFactors = FALSE)
 
-# 2. 确保有 AVAL 和 BASE 列
+# Ensure AVAL and BASE exist
 if (!"AVAL" %in% names(dataset)) {
   val_col <- if ("value" %in% names(dataset)) "value" else names(dataset)[2]
   dataset$AVAL <- as.numeric(dataset[[val_col]])
 }
 if (!"BASE" %in% names(dataset)) dataset$BASE <- dataset$AVAL[1]
 
-# 3. 执行函数
+# Execute function
 result <- admiral::derive_var_pchg(dataset)
 
-# 4. 保存输出
+# Save outputs
 outputs_dir <- "outputs"
 dir.create(outputs_dir, showWarnings = FALSE)
 write.csv(result, file.path(outputs_dir, "result.csv"), row.names = FALSE)
