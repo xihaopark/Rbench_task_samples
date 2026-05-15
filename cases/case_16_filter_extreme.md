@@ -178,24 +178,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/filter_extreme",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "c5ebd6d77df8764b43d956f15b9c2f73fbcfb538cf9ec9a858e0b0fc205e6917",
-  "raw_response": "```r\nlibrary(admiral)\nlibrary(rlang)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\ndataset <- read.delim(\"dataset.tsv\", sep = \"\\t\", stringsAsFactors = FALSE, check.names = FALSE)\nby_vars_tbl <- read.delim(\"by_vars.tsv\", sep = \"\\t\", stringsAsFactors = FALSE, check.names = FALSE)\n\n# Expecting by_vars.tsv to contain a column 'by_var' listing grouping variables in order\nby_vars_syms <- lapply(by_vars_tbl$by_var, sym)\n\n# Expecting task.json-like info encoded in by_vars.tsv:\n# columns: by_var, keep (first/last/min/max), order_var\n# This script assumes:\n#  - 'keep' is the same for all rows (one task)\n#  - 'order_var' is the variable used in `order = exprs(...)`\n\nkeep_mode   <- unique(by_vars_tbl$keep)\norder_var   <- unique(by_vars_tbl$order_var)\n\nif (length(keep_mode) != 1L) {\n  stop(\"by_vars.tsv must specify a single keep mode per file (first/last/min/max).\")\n}\nif (length(order_var) != 1L) {\n  stop(\"by_vars.tsv must specify a single order_var per file.\")\n}\n\norder_expr <- exprs(!!sym(order_var))\n\nres_first <- switch(\n  keep_mode,\n  \"first\" = admiral::filter_extreme(\n    dataset,\n    by_vars = !!!by_vars_syms,\n    order   = order_expr,\n    mode    = \"first\"\n  ),\n  \"last\" = admiral::filter_extreme(\n    dataset,\n    by_vars = !!!by_vars_syms,\n    order   = order_expr,\n    mode    = \"last\"\n  ),\n  \"min\" = admiral::filter_extreme(\n    dataset,\n    by_vars = !!!by_vars_syms,\n    order   = order_expr,\n    mode    = \"first\"\n  ),\n  \"max\" = admiral::filter_extreme(\n    dataset,\n    by_vars = !!!by_vars_syms,\n    order   = order_expr,\n    mode    = \"last\"\n  ),\n  stop(\"Invalid keep mode: must be one of first/last/min/max.\")\n)\n\nwrite.csv(res_first, file = \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:14:17.297101",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

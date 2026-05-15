@@ -177,24 +177,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/derive_vars_cat",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "9c1c12c3befb2686f5beaf795b76367ba3a88f769378a575c26dcb61012b4c83",
-  "raw_response": "```r\nlibrary(admiral)\nlibrary(dplyr)\nlibrary(readr)\nlibrary(rlang)\nlibrary(tibble)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\ndatase <- read.delim(\"inputs/datase.tsv\", stringsAsFactors = FALSE)\n\nstopifnot(\"AVAL\" %in% names(datase))\n\ndefinition <- admiral::exprs(\n  condition ~ case_when(\n    AVAL < 10 ~ \"Low\",\n    AVAL >= 10 & AVAL < 20 ~ \"Medium\",\n    AVAL >= 20 ~ \"High\"\n  ),\n  AVALCAT1 ~ case_when(\n    AVAL < 10 ~ \"Low\",\n    AVAL >= 10 & AVAL < 20 ~ \"Medium\",\n    AVAL >= 20 ~ \"High\"\n  ),\n  AVALCA1N ~ case_when(\n    AVAL < 10 ~ 1L,\n    AVAL >= 10 & AVAL < 20 ~ 2L,\n    AVAL >= 20 ~ 3L\n  )\n)\n\nresult <- admiral::derive_vars_cat(datase, definition = definition)\n\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:13:06.065023",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

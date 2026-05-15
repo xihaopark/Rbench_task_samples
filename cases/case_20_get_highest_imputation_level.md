@@ -113,24 +113,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/get_highest_imputation_level",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "be7c0ec7f162ab3bc48fc90a9dd8ff85ec1080606620991e53527d27843f3d81",
-  "raw_response": "```r\nlibrary(admiral)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nhighest_imputation <- read.delim(\"highest_imputation.tsv\", stringsAsFactors = FALSE)\n\ncreate_datetime_path <- \"create_datetime.tsv\"\nif (file.exists(create_datetime_path)) {\n  create_datetime <- read.delim(create_datetime_path, stringsAsFactors = FALSE)\n} else {\n  create_datetime <- NULL\n}\n\nresult <- get(\"get_highest_imputation_level\", envir = asNamespace(\"admiral\"))(\n  highest_imputation = highest_imputation,\n  create_datetime = create_datetime\n)\n\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:14:31.065222",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

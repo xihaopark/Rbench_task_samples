@@ -317,24 +317,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/convert_simple_units",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "c4957ecb57e1a72a43b3f9a5deae587deeb27465ab4d788f7bb040bf64789454",
-  "raw_response": "```r\nlibrary(admiral)\n\n# Create outputs directory\ndir.create(\"outputs\", showWarnings = FALSE)\n\n# Read inputs\nmay_df     <- read.delim(file.path(\"inputs\", \"may.tsv\"),\n                         check.names = FALSE, stringsAsFactors = FALSE)\nna_idx_df  <- read.delim(file.path(\"inputs\", \"na_idx.tsv\"),\n                         check.names = FALSE, stringsAsFactors = FALSE)\nno_df      <- read.delim(file.path(\"inputs\", \"no.tsv\"),\n                         check.names = FALSE, stringsAsFactors = FALSE)\nresult_df  <- read.delim(file.path(\"inputs\", \"result.tsv\"),\n                         check.names = FALSE, stringsAsFactors = FALSE)\nxxtpt_df   <- read.delim(file.path(\"inputs\", \"xxtpt.tsv\"),\n                         check.names = FALSE, stringsAsFactors = FALSE)\n\n# Map columns to arguments for convert_simple_units\n# Assume common structure: one value column and one unit column.\n# Prefer the canonical ADaM naming when present, otherwise fall back\n# to generic names. Adjust as needed based on actual column names.\n\nget_unit_cols <- function(df) {\n  cols <- names(df)\n  list(\n    values = if (\"AVAL\" %in% cols) df[[\"AVAL\"]] else if (\"value\" %in% cols) df[[\"value\"]] else df[[1]],\n    units  = if (\"AVALU\" %in% cols) df[[\"AVALU\"]] else if (\"unit\" %in% cols) df[[\"unit\"]] else df[[2]]\n  )\n}\n\nmay_cols    <- get_unit_cols(may_df)\nna_idx_cols <- get_unit_cols(na_idx_df)\nno_cols     <- get_unit_cols(no_df)\nxxtpt_cols  <- get_unit_cols(xxtpt_df)\n\n# Perform conversions with convert_simple_units\nmay_conv <- convert_simple_units(\n  values = may_cols$values,\n  units  = may_cols$units,\n  int_units = \"SI\"\n)\n\nna_idx_conv <- convert_simple_units(\n  values = na_idx_cols$values,\n  units  = na_idx_cols$units,\n  int_units = \"SI\"\n)\n\nno_conv <- convert_simple_units(\n  values = no_cols$values,\n  units  = no_cols$units,\n  int_units = \"SI\"\n)\n\nxxtpt_conv <- convert_simple_units(\n  values = xxtpt_cols$values,\n  units  = xxtpt_cols$units,\n  int_units = \"SI\"\n)\n\n# Assemble result table; keep any existing key columns from result_df\nresult_out <- result_df\n\n# If result_df already has placeholder columns, overwrite them; otherwise append.\nappend_or_replace <- function(df, new_vec, nm) {\n  if (nm %in% names(df)) {\n    df[[nm]] <- new_vec\n  } else {\n    df[[nm]] <- new_vec\n  }\n  df\n}\n\nresult_out <- append_or_replace(result_out, may_conv$values,    \"may_values\")\nresult_out <- append_or_replace(result_out, may_conv$units,     \"may_units\")\nresult_out <- append_or_replace(result_out, na_idx_conv$values, \"na_idx_values\")\nresult_out <- append_or_replace(result_out, na_idx_conv$units,  \"na_idx_units\")\nresult_out <- append_or_replace(result_out, no_conv$values,     \"no_values\")\nresult_out <- append_or_replace(result_out, no_conv$units,      \"no_units\")\nresult_out <- append_or_replace(result_out, xxtpt_conv$values,  \"xxtpt_values\")\nresult_out <- append_or_replace(result_out, xxtpt_conv$units,   \"xxtpt_units\")\n\n# Write required output\nwrite.csv(result_out, file.path(\"outputs\", \"result.csv\"), row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:12:20.182550",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

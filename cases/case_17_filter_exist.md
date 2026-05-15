@@ -178,24 +178,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/filter_exist",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "a4cced2e7346e4d64970d92b36101071711ffae50d18f1b744db324a75a95bfc",
-  "raw_response": "```r\nlibrary(admiral)\n\n# Create outputs directory\ndir.create(\"outputs\", showWarnings = FALSE)\n\n# Read inputs\nby_vars_df <- read.delim(\n  file.path(\"inputs\", \"by_vars.tsv\"),\n  check.names = FALSE,\n  stringsAsFactors = FALSE\n)\ndataset <- read.delim(\n  file.path(\"inputs\", \"dataset.tsv\"),\n  check.names = FALSE,\n  stringsAsFactors = FALSE\n)\ndataset_add <- read.delim(\n  file.path(\"inputs\", \"dataset_add.tsv\"),\n  check.names = FALSE,\n  stringsAsFactors = FALSE\n)\nfilter_add_df <- read.delim(\n  file.path(\"inputs\", \"filter_add.tsv\"),\n  check.names = FALSE,\n  stringsAsFactors = FALSE\n)\n\n# by_vars: assume a single row and all columns are variable names to use\nby_vars <- vars(!!!rlang::syms(as.character(unlist(by_vars_df[1, , drop = TRUE]))))\n\n# filter_add: assume this contains an R expression in a column named \"filter\"\n# that should be combined with '&' if multiple rows\nif (!(\"filter\" %in% names(filter_add_df))) {\n  stop(\"filter_add.tsv must contain a column named 'filter' with filter expressions\")\n}\nfilter_exprs_chr <- filter_add_df$filter\nfilter_exprs_chr <- filter_exprs_chr[filter_exprs_chr != \"\" & !is.na(filter_exprs_chr)]\n\nif (length(filter_exprs_chr) == 0) {\n  filter_add <- NULL\n} else {\n  # combine multiple expressions with &\n  combined_filter_chr <- paste0(\"(\", filter_exprs_chr, \")\", collapse = \" & \")\n  filter_add <- rlang::parse_expr(combined_filter_chr)\n}\n\n# Run filter_exist\nresult <- filter_exist(\n  dataset     = dataset,\n  dataset_add = dataset_add,\n  by_vars     = by_vars,\n  filter_add  = filter_add\n)\n\n# Write output\nwrite.csv(result, file = file.path(\"outputs\", \"result.csv\"), row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:14:09.691991",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

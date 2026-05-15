@@ -160,24 +160,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/impute_dtc_dt",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "b6645379855e40b4c745831c396edc5c601b76da426bc950fc61a0adc410bf5e",
-  "raw_response": "```r\nlibrary(admiral)\n\n# Create outputs directory\ndir.create(\"outputs\", showWarnings = FALSE)\n\n# Read inputs\ndtc <- read.delim(\"dtc.tsv\", stringsAsFactors = FALSE)\n\nhighest_imp_path <- \"highest_imputation.tsv\"\nif (file.exists(highest_imp_path)) {\n  highest_imputation_df <- read.delim(highest_imp_path, stringsAsFactors = FALSE)\n  # Assume a single value in a column named 'highest_imputation'\n  if (\"highest_imputation\" %in% names(highest_imputation_df)) {\n    highest_imputation <- highest_imputation_df$highest_imputation[1]\n  } else {\n    highest_imputation <- NULL\n  }\n} else {\n  highest_imputation <- NULL\n}\n\n# Impute dates\nres <- impute_dtc_dt(\n  dtc,\n  highest_imputation = highest_imputation,\n  date_imputation = \"mid\"\n)\n\n# Ensure data.frame for writing\nres_df <- as.data.frame(res)\n\n# Write result\nwrite.csv(res_df, file = \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:14:54.658462",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

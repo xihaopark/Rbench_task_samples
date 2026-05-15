@@ -184,24 +184,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/compute_age_years",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "0fe4d993818b4cbae8b0db0b19a92116bebe5504efb28b2cfcc0560eaa65e567",
-  "raw_response": "```r\nlibrary(admiral)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nage_df <- read.table(\"inputs/age.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\nage_unit_df <- read.table(\"inputs/age_unit.tsv\", header = TRUE, sep = \"\\t\", stringsAsFactors = FALSE)\n\ndf <- cbind(age_df, age_unit_df)\n\ndf$AGE_Y <- compute_age_years(df[[1]], df[[2]])\n\nwrite.csv(df, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:11:21.260219",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

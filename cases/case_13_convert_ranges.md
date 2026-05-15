@@ -343,24 +343,6 @@ Execution halted
 
 _No files generated._
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/convert_ranges",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "79814b5ea7ccb0cc2d7896b44171f9dc4c2b2c078b0c10eb2e047d2816a33ba8",
-  "raw_response": "```r\nlibrary(admiral)\nlibrary(dplyr)\nlibrary(stringr)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nxxtpt <- read.delim(\"inputs/xxtpt.tsv\", sep = \"\\t\", stringsAsFactors = FALSE)\nres_df <- read.delim(\"inputs/result.tsv\", sep = \"\\t\", stringsAsFactors = FALSE)\nna_idx <- read.delim(\"inputs/na_idx.tsv\", sep = \"\\t\", stringsAsFactors = FALSE)\nrange_method_df <- read.delim(\"inputs/range_method.tsv\", sep = \"\\t\", stringsAsFactors = FALSE)\n\nresult <- res_df$result\nna_idx_logical <- as.logical(na_idx$na_idx)\nrange_method <- range_method_df$range_method[1]\n\ntxt <- xxtpt$xxtpt\n\n# Two documented regex patterns for hour ranges\n# 1) \"(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*(?:to|-|–|—)\\\\s*(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*h\"\n# 2) \"between\\\\s+(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*and\\\\s*(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*h\"\nre1 <- \"(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*(?:to|-|–|—)\\\\s*(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*h\"\nre2 <- \"between\\\\s+(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*and\\\\s*(-?\\\\d+(?:\\\\.\\\\d+)?)\\\\s*h\"\n\nm1 <- str_match(txt, re1)\nm2 <- str_match(txt, re2)\n\n# choose pattern that matched (non-NA start)\nstart_chr <- ifelse(!is.na(m1[, 2]), m1[, 2], m2[, 2])\nend_chr   <- ifelse(!is.na(m1[, 3]), m1[, 3], m2[, 3])\n\nstart_num <- suppressWarnings(as.numeric(start_chr))\nend_num   <- suppressWarnings(as.numeric(end_chr))\n\n# Positive span per ADMIRAL helper\nspan <- admiral::calculate_range_value(start = start_num,\n                                       end   = end_num,\n                                       range_method = range_method)\n\n# Direction rules:\n# if both bounds are <= 0  -> prior/before -> negative\n# if both bounds are >= 0  -> post/after  -> positive\n# otherwise (spanning zero) -> use sign of end\ndir_sign <- ifelse(!is.na(start_num) & !is.na(end_num) & start_num <= 0 & end_num <= 0, -1,\n            ifelse(!is.na(start_num) & !is.na(end_num) & start_num >= 0 & end_num >= 0,  1,\n            ifelse(!is.na(end_num) & end_num < 0, -1,\n            ifelse(!is.na(end_num) & end_num > 0,  1, NA))))\n\ncomputed <- span * dir_sign\n\nupdate_idx <- is.na(result) & !na_idx_logical & !is.na(computed)\nresult[update_idx] <- computed[update_idx]\n\nout_df <- res_df\nout_df$result <- result\n\nwrite.csv(out_df, \"outputs/result.csv\", row.names = FALSE)\n\n# Optional summary similar to solution.R if needed\nsummary_df <- data.frame(\n  xxtpt        = xxtpt$xxtpt,\n  start        = start_num,\n  end          = end_num,\n  span         = span,\n  dir_sign     = dir_sign,\n  computed     = computed,\n  initial_res  = res_df$result,\n  final_res    = result,\n  na_idx       = na_idx_logical,\n  stringsAsFactors = FALSE\n)\n\nwrite.csv(summary_df, \"outputs/summary.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:12:11.996751",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json

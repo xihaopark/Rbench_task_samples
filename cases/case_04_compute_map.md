@@ -236,24 +236,6 @@ write.csv(result, "outputs/result.csv", row.names = FALSE)
 1000,1000,1000,1000
 ```
 
-## LLM Metadata
-
-```json
-{
-  "task_id": "pharmaverse/admiral/compute_map",
-  "package": "admiral",
-  "track_id": "clinical_pilot",
-  "content_tag_id": "clinical",
-  "flow_tag_id": "transform",
-  "scoring_mode_id": "strict",
-  "code_sha256": "c6c2fdb0d330f47bf8d92f8d2c2dd9668eaa697a9b14c2a2d8016cf4c689a743",
-  "raw_response": "```r\nlibrary(admiral)\nlibrary(rlang)\n\ndir.create(\"outputs\", showWarnings = FALSE)\n\nsysbp <- read.delim(\"inputs/sysbp.tsv\", header = TRUE, sep = \"\\t\", check.names = FALSE)\nhr    <- read.delim(\"inputs/hr.tsv\",    header = TRUE, sep = \"\\t\", check.names = FALSE)\ndiabp <- read.delim(\"inputs/diabp.tsv\", header = TRUE, sep = \"\\t\", check.names = FALSE)\n\n# Assume the first column in each file contains the numeric values\nsysbp_val <- sysbp[[1]]\nhr_val    <- hr[[1]]\ndiabp_val <- diabp[[1]]\n\nmap_val <- admiral::compute_map(sysbp_val, hr_val, diabp_val)\n\nresult <- data.frame(\n  SYSBP = sysbp_val,\n  HR    = hr_val,\n  DIABP = diabp_val,\n  MAP   = map_val\n)\n\nwrite.csv(result, \"outputs/result.csv\", row.names = FALSE)\n```",
-  "model": "openai/gpt-5.1",
-  "timestamp": "2026-03-30T16:11:33.896276",
-  "source": "direct_llm"
-}
-```
-
 ## Evaluation Record
 
 ```json
