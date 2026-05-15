@@ -1,0 +1,240 @@
+# Case 29 - `biostrings/B004_nucleotide_frequency`
+**Track:** `omics_core`  **Package:** `biostrings`  **Function:** `letterFrequency`  **Level:** `L1`  **Agent sample:** Biomni `sample_00`  **Evaluation status:** `FAIL`
+**Evaluation message:** Failed at case_01_seed_1000
+**Sample status counts:** `{"FAIL": 5}`
+
+## Task Prompt
+
+```text
+Write R code to calculate per-sequence nucleotide composition using Biostrings. The DNA sequences are stored in inputs/sequences.fasta, and you should read them into an appropriate Biostrings DNA container, then use the letterFrequency() function with letters=c("A","C","G","T") and as.prob=TRUE so that you obtain a matrix of A, C, G, and T proportions for each sequence, suitable for assessing GC content and compositional biases that may reflect sequencing quality or underlying genome structure. Rely only on Biostrings and its documented helper functions for reading and handling the sequences, and then write the resulting frequency matrix as a CSV file to outputs/nucleotide_freq.csv. After running the analysis, confirm that the output file exists, quickly scan a few rows to ensure the nucleotide proportions (and implied GC content) look reasonable, and check that there are no NA-heavy or obviously corrupted entries.
+```
+
+## Input Files
+
+**`inputs/sequences.fasta`**
+
+```text
+>seq1
+TGTCAAGGCACCCTAGATTTGATAGTAGACCATGTGCTCTTAGGTCCATCTCGCATAGAAACGTTATAACCCGTGAACGGGAACAAGGGTTGCTCGACTGTGATCTTGCACCATAACACAGGCGATAACTCCCCTCGCCGACCAGAGAGGGTCCGGCACGTTATCACTCGTGACCGGGAGCTGACTTGACTCACACTCGAAGAAGCATGTCCGAAGCCGTCAACCCGAGGTAATCGCGTATTTACCGCACCCAACCAAGCTGTGCATAAGCATTCGCGGGAGTTAGGCGGTGCATTTTTCTGAGCCACC
+>seq2
+TAGAAGGTGTGCTGATTTACGACGCAGATTGGAGCGCGTCGGGGCTAGCCAGTTGTGGGCCGTTCTGGGAAAATGCCGATTGAGATCCGCAGACCATTTCTACCCGCAGAGTGCCCAGTATGGGGTTTAGATGCTGATTTAGCTATTAGATCGGGTGAGAGGTGGTGAATCGTTAGCGTGAAACCGACGGTATTGTAAGTAGTCGACGTTATCAACGCATATTTAAGTTTGAGGACGGCTACAGCGCAAAATTACCGCTCTTCCTGAGCTTCACAGATGCAGGCGTTGACTCTTTCTCAAGTACACTCA
+>seq3
+CACATGCAGTCGCTGACCTAATGACTTTCGTGCCACTCAGTCTTAAGTAAGTATATTCCAAAGAAGAGAGGTAGCCCGAATGCCGTCAGACTCGCCCGCTGAGGTAGTTTGGTTATTGGCTCCCGCTCTGGTAGACGCAATCTCCACCCAAAATCGCCGGCATTCCAGACAGAGATAATTTGACGTGTCCCGCATTCCACTCGCCTTGTTTTGCGATCACCAAACACGCGTCTCCAGGAATGTGTACCCTATGGCCACATGGATCGTGCGGACACAATATAGATCCGATTCCATAAGTGCGTGGATTTA
+>seq4
+CCGTCTTTTTGATTCGAAGCCCAAAACTTCCTCTAACTTACGTTGATCTCGCGGTGTCCAACTGTTCCAGTCTTGCCCGTTTGGGCGGTAGAATATAGCTAAACACGAATACAGAGACGAGCAGTGTATGTTCCCGAGATCCATTATTTTCGCGAGGGTGAGTAATGCCGGCTCCCACTAAAGGCGTCTAACCAAGAAGGCGACGACGGGCTCTCATAAATGCTTGAGCGGGATTCTGACCCCGTACTAAGGACTGGACGTAAGAATCGCGGGCGATAATCCAATTTAGCCAGCACGGACAAACGACAA
+>seq5
+TCCTAACTGTCTCGTACTTTCGGCACTGGACGGTTCCCTCAAATCCTTTCGTCAGATCTATATTTTGGAAATTTCGTGAACAATGATCCTAAACGCGAAGATGTTTGTAGCCCACAAGGTGTCTTACTTCAGAGGAGAAGGCGGACAAGAGCACTGACGTTCGAGAACACAGATTACAAAGACAAATGGGATACAGGTTCTGGTGACCCGCTGACAACTTTGGGGGCCGTCGTGGGACGCAATACTTTACCTAATTAGCGAGCCGCGTAACGTCTACTGCATCCGACGAACATGAGCGGAATGAAACAG
+>seq6
+ACGAACGAAGTAGTTAAGCTGGAAAGACCAAAACATCATAACAAGCGTCGCCATCATATGTACCCCATGAGCGGACCAAGTTGGCTATCGAACTCCGAACCTGGTCGCTGCTCGGACGTCGGGATAGGCCCGGTGAAGCTAACTCTCGCCCAGACGCGCAAAAGCCGACTGAGGCGACTGTACACGCCGTGATGTCCTGTTTTCAGTGCGTGGTTGATCGCTAGATATCTTCGCGCCTCCAGAGCTGTATATCTTGACAATCTGTCCACACCAGCGGAGGAACGGGACGGGTCTGCAATCGCGCGTCGA
+>seq7
+TCCAATAGTCTCAGATTCGCCCGTTTTGTGTCTAATGCTGTCTCATGACTTGGTAAGGGTAGATGTAAAGACACGGTATGCCGGGCACTACACACGTGTAGCCAGGGCATTGTACACCGAACGTGGATTTCGGGAATAGGCGGCACAGATCGATTGGCTAATGTCATGCGCATCTCTGCACTACAACCCATGTCGGGACTCTCGCAGACTGGTTTCAGATTAGTGCAGCGTAGAAAGTTTGTAGGGTCGATGGAAGGTTCGCAATTCGGGTGCTTTCCCGCACTGACGGATCTGTTCTACTCGGGCGCA
+>seq8
+AGGTGACCATCTGATAGGCAGTGGAGAAACCGTCACCATGAAGTATGCCGCTGCGGACGACAGAGCTCGCACCCCTGCCGCGGTCGCACCCGGGAGGTCAAGGACATCTGCTGGTCATCGGAACGCGAAAGGCTTACACCATTTTAGCGCTTCTAATAGGACTCAAGATGCAGACACTAGCAGATGTTGGAGCAGCTCGGATAGCTAAAGCAGAATTGACGGAATGGCCGCATTATGGACTCCGTACTCATTAGTGTTAAAAGTCATGCGCGGACGTGATATTGAACGCTGTACATACAACGATGCATG
+>seq9
+TTCAGGTAACGCCTGTCGTGTCGTGTAATGGAAGCGTCTATAAGCAACACGGTTAGCATCTCCCTAGCTAACAACACCTCAAGTTATGTCCAAGCGCTGCCACCTATGTGCACCTTTGTTGGCCCTTACCTTTCCTTTTTCGACAGCAGAACTTCCGCTCAGAAGCGATCCTGTAGATTAAAGAGGCCATAGTTGATCAACTGGTGCTTGCGGCCGGGCTCTTATAAGCGCACGAGTGAGCCGTCAGTGGGGAGCTAGAATACATGGGTACCCCTCCAGATAATCTTCAAAAACTAGATTCTTTCGGGA
+>seq10
+TCGTCGGAAATAAGACCAGAAAGGACTAGTACCTGCTGGACTTCCAAGTTGGCTCTGATGCTTCGCGATAAGCATAGGAATGCCCTCACGGCCATACGCGACGTCGTATCGTACAAACCAATTCAGTGAGGTGACACGGATTCCGGTGCTATATCCATTTTATACCGGTCCTGACATGAATTTTTCGCTCGGGGGAGAGTACAACGGTCAGACAAATCCTACGGGAAAAGGAATCGCACAACGCCATAGGGGAAGATCCGAAAGTGCGCATGGTAGCCTCGTTGGGCACTGATTCGTCAATGTTATTCC
+>seq11
+GCTCTTCGCCGCTGATCTCGTAGTGCCATGTTCCGAGTACTGCCTGAGCATATGGGTCGGCCAAGTTACAGCACCCACGCGCACCACTTAGCATATCGTGTGTGTGGAATCGGCTTTGTGTGATAAAGAGGACTGCCAAAACATTTGTCGACGACACTATGGGACGACAACACCAATATGAGGGCACGGCCGGCACAATCGTTGGTTTTAATTAGTTATACTGCAACGTGCCAGACTGGAGTAGCGTGCAGCCAATCCTAGACCAGGGCCAAAAGGATTCGGCTAGCATTTTTACGATTTTCGACTTCG
+>seq12
+GGACTCCTCTCCCAGAGTGCCCGTTTATGCAGAATATTGGGATGCATTAATGCGCCTGCGGGCCAATTCGCGTAGGAAGTACGGGTCTTGTTGTCATCATTGCGATACCTAAGCTTAAGCAAAAGCACCGGCCAACCGACCCCACCGTGGCAATAAATGCTTTCGTAATCCCCCCATACTTCAGTGCTGACTACGTATAGGCACAATATGTATGTGTTCATTCATACACTGGCTGGCGGACCCTTCAAGACAAATACTGATCCCACCGGTTCCGAGCAAGAGGAGGATCCGTAATAGATGGATCCATAA
+>seq13
+GATATCTGATCTGGCTACTTGTCCGCCAGTTTATGATTCTTAGGAATCCTATCAGCTCGATTTCGTATCATATGCACATATAACGGTGGCTATGTCAAGCGATCAGACACGACTTCATGACAAGAATCACTATCTTTACGTTCTTGTCACACTCGTTAGCCAACAAGGTGTGCAAGTGATATGGGACTTGCGGGCCTTCATAGACACCTAACACTGGTATGATGCGGGAGGGAGTCGGCGCCCGTGAATAATCATATTACTGGGTAATCCAGCGCGGGTATGGGCCCTGATGACGGGCTTCTCGTTTTA
+>seq14
+AAGAGTAGCAGACTCGGTAACGACGTGAGCGCGTAGGACCAGTTACTGTACCTAGGCGTTTCAATGCATTCTCTCAACCAAGTAAGGGCTTAGCATCCCTAGACACGACCTTCGAACGGCTTCTTAGCTCCACTCTTGTCTTAACGTGTCTAGATTGCGGTTTAGTCGAGCTCAAACAAGGCGTGGCCAGGCCCGAAACAACTTCCCATCCAACTATCCAGACCCATAAGCGATTTCTAGCTCCCTGTTAGAATAGTCGAACATGAGACATCCCGGAATACCGCATCTACCCTTTCGATAGACGATGGG
+```
+
+## Reference Code
+
+```r
+#!/usr/bin/env Rscript
+library(Biostrings)
+
+sequences = readDNAStringSet('inputs/sequences.fasta')
+freq = letterFrequency(sequences, letters=c("A", "C", "G", "T"), as.prob=TRUE)
+write.csv(freq, 'outputs/nucleotide_freq.csv', row.names=TRUE, quote=FALSE)
+```
+
+## Reference Output
+
+**`outputs/nucleotide_freq.csv`**
+
+```csv
+,A,C,G,T
+1,0.252427184466019,0.281553398058252,0.249190938511327,0.216828478964401
+2,0.239482200647249,0.207119741100324,0.288025889967638,0.26537216828479
+3,0.249190938511327,0.275080906148867,0.226537216828479,0.249190938511327
+4,0.268608414239482,0.252427184466019,0.245954692556634,0.233009708737864
+5,0.281553398058252,0.233009708737864,0.245954692556634,0.239482200647249
+6,0.249190938511327,0.27831715210356,0.271844660194175,0.200647249190939
+7,0.223300970873786,0.233009708737864,0.281553398058252,0.262135922330097
+8,0.275080906148867,0.242718446601942,0.27831715210356,0.203883495145631
+9,0.245954692556634,0.258899676375405,0.233009708737864,0.262135922330097
+10,0.271844660194175,0.239482200647249,0.258899676375405,0.229773462783172
+11,0.245954692556634,0.249190938511327,0.258899676375405,0.245954692556634
+12,0.26537216828479,0.26537216828479,0.229773462783172,0.239482200647249
+13,0.242718446601942,0.226537216828479,0.245954692556634,0.284789644012945
+14,0.26537216828479,0.27831715210356,0.220064724919094,0.236245954692557
+```
+
+## Biomni Code
+
+```r
+tags, I'll provide the complete R code.
+
+<solution>
+#!/usr/bin/env Rscript
+
+# Script: solution.R
+# Description: Calculate per-sequence nucleotide composition from FASTA file
+# Usage: Rscript solution.R
+
+# Load required library
+if (!requireNamespace("Biostrings", quietly = TRUE)) {
+  stop("Biostrings package is not available. Please install it first.")
+}
+
+# Create outputs directory if it doesn't exist
+dir.create("outputs", showWarnings = FALSE)
+
+# Define file paths
+input_file <- "inputs/sequences.fasta"
+output_file <- "outputs/nucleotide_freq.csv"
+
+# Check if input file exists
+if (!file.exists(input_file)) {
+  stop(paste("Input file not found:", input_file))
+}
+
+cat("Reading DNA sequences from:", input_file, "\n")
+
+# Read the FASTA file
+dna_seqs <- Biostrings::readDNAStringSet(input_file)
+
+# Check if any sequences were read
+if (length(dna_seqs) == 0) {
+  stop("No sequences found in the input file.")
+}
+
+cat("Number of sequences read:", length(dna_seqs), "\n")
+cat("Sequence names:", names(dna_seqs)[1:min(5, length(dna_seqs))], "...\n")
+
+# Calculate nucleotide frequencies
+cat("Calculating nucleotide frequencies...\n")
+nuc_freq <- Biostrings::letterFrequency(dna_seqs, letters = c("A", "C", "G", "T"), as.prob = TRUE)
+
+# Convert to data frame for easier CSV writing
+nuc_freq_df <- as.data.frame(nuc_freq)
+nuc_freq_df$SequenceID <- names(dna_seqs)
+nuc_freq_df$SequenceLength <- Biostrings::width(dna_seqs)
+
+# Calculate GC content
+nuc_freq_df$GC_content <- nuc_freq_df$G + nuc_freq_df$C
+
+# Reorder columns for better readability
+nuc_freq_df <- nuc_freq_df[, c("SequenceID", "SequenceLength", "A", "C", "G", "T", "GC_content")]
+
+# Write to CSV file
+cat("Writing results to:", output_file, "\n")
+write.csv(nuc_freq_df, file = output_file, row.names = FALSE)
+
+# Verification steps
+cat("\n--- Verification ---\n")
+cat("Output file exists:", file.exists(output_file), "\n")
+cat("File size:", file.size(output_file), "bytes\n")
+
+# Read and display first few rows of the output
+if (file.exists(output_file)) {
+  cat("\nFirst few rows of output:\n")
+  output_data <- read.csv(output_file, nrows = 5)
+  print(output_data)
+  
+  # Check for NA values
+  na_count <- sum(is.na(nuc_freq_df[, c("A", "C", "G", "T")]))
+  cat("\nNumber of NA values in nucleotide frequencies:", na_count, "\n")
+  
+  # Check if proportions sum to approximately 1 for each sequence
+  row_sums <- rowSums(nuc_freq_df[, c("A", "C", "G", "T")])
+  valid_rows <- all(abs(row_sums - 1) < 0.001, na.rm = TRUE)
+  cat("All nucleotide proportions sum to ~1:", valid_rows, "\n")
+  
+  # Summary statistics
+  cat("\nGC content summary:\n")
+  print(summary(nuc_freq_df$GC_content))
+  
+  cat("\nAnalysis complete. Results saved to:", output_file, "\n")
+} else {
+  warning("Output file was not created successfully.")
+}
+```
+
+## Biomni Execution Output
+
+**`stdout.txt`**
+
+```text
+```
+
+**`stderr.txt`**
+
+```text
+Error: unexpected ',' in "tags,"
+Execution halted
+```
+
+## Biomni Output Files
+
+_No files available._
+
+## Biomni Metadata
+
+```json
+{
+  "task_id": "biostrings/B004_nucleotide_frequency",
+  "package": "biostrings",
+  "track_id": "omics_core",
+  "content_tag_id": "omics",
+  "flow_tag_id": "read",
+  "scoring_mode_id": "strict",
+  "code_sha256": "f3cb8d1bc0d0f27c3f24638ea415361e9f4916fcf340cdb24a3eabe815590d29",
+  "agent": "biomni",
+  "model": "deepseek/deepseek-v3.2-exp",
+  "temperature": 1.0,
+  "timestamp": "2026-04-02T13:14:08.667462",
+  "raw_response": "",
+  "token_usage": {
+    "prompt_tokens": 0,
+    "completion_tokens": 0,
+    "total_tokens": 0
+  },
+  "gen_time_seconds": 91.87
+}
+```
+
+## Evaluation Record
+
+```json
+{
+  "task_id": "biostrings/B004_nucleotide_frequency",
+  "sample_idx": 0,
+  "agent": "biomni",
+  "status": "FAIL",
+  "message": "Failed at case_01_seed_1000",
+  "timestamp": "2026-02-14T09:07:07.794541",
+  "gen_time": 37.5,
+  "docker_time": 33.91,
+  "test_cases": [
+    {
+      "case": "case_01_seed_1000",
+      "status": "FAIL",
+      "comparison": {
+        "nucleotide_freq.csv": {
+          "match": false,
+          "reason": "Value mismatch in column: Unnamed: 0"
+        }
+      },
+      "returncode": 0
+    }
+  ]
+}
+```
