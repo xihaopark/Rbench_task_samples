@@ -31,6 +31,10 @@ Prompt/reference contract issues alone account for 38/50 audited samples. Includ
 
 - `../cases/README.md` - index of 50 expanded case pages with actual inputs, reference outputs, generated outputs, execution logs, evaluation records, and audit evidence.
 
+## Bio/Omics Controls
+
+- `../bio_controls/README.md` - six proteomics control pages from a GPT-5.1 pass5 run, covering clean PASS tasks, mixed exactness failures, and a clear LLM-overreach failure. These are included as contrast against the clinical taskset254 contract-defect pattern.
+
 ## Reports
 
 - `summary.md` - concise 50-sample audit summary and recommended fixes.

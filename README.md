@@ -63,6 +63,15 @@ The richer per-case pages are here:
 
 Each sampled case page includes the task prompt, actual input files, reference output files, reference code, current/simple generated code, execution logs, generated output files, compact evaluation records, and audit root-cause evidence.
 
+
+## Bio/Omics Controls
+
+A small proteomics control set was added to show how GPT-5.1 behaves on cleaner bio tasks with direct input/output contracts:
+
+- [`bio_controls/README.md`](results/gpt51_clinical_taskset254/bio_controls/README.md)
+
+These controls include passing, mixed, and failing proteomics tasks from `openai_gpt_5.1_proteomics_pass5_20260118_093231`. They help separate clinical taskset contract defects from ordinary LLM implementation errors.
+
 ## Audit Reports
 
 Start here:
