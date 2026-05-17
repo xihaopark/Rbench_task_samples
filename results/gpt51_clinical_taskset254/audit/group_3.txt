@@ -1,0 +1,10 @@
+21	pharmaverse/admiral/extract_unit	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/extract_unit
+22	pharmaverse/admiraldev/get_source_vars	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiraldev/get_source_vars
+23	pharmaverse/admiraldev/squote	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiraldev/squote
+24	pharmaverse/aNCA/translate_terms	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/translate_terms
+25	pharmaverse/admiral/restrict_imputed_dtc_dtm	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/restrict_imputed_dtc_dtm
+26	pharmaverse/admiral/get_imputation_target_date	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/get_imputation_target_date
+27	pharmaverse/admiraldiscovery/admiral_pkg_versions	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiraldiscovery/admiral_pkg_versions
+28	pharmaverse/sdtm.oak/problems	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/sdtm.oak/problems
+29	pharmaverse/aNCA/add_qmd_sl_plot	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/add_qmd_sl_plot
+30	pharmaverse/admiral/convert_predose_patterns	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/convert_predose_patterns
