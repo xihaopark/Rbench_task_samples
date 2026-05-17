@@ -1,0 +1,32 @@
+{
+  "experiment_date": "2026-05-17",
+  "model": "openai/gpt-5.1",
+  "taskset": "clinical_pilot_taskset254",
+  "taskset_description": "254 clinical tasks (260 current-release minus 6 new tasks absent from old GPT-5.1 run)",
+  "excluded_tasks": [
+    "pharmaverse/admiral/derive_param_bsa",
+    "pharmaverse/admiral/derive_vars_merged",
+    "pharmaverse/admiral/derive_vars_merged_summary",
+    "pharmaverse/admiral/event_source",
+    "pharmaverse/admiral/filter_not_exist",
+    "pharmaverse/admiral/is_partial_datetime"
+  ],
+  "experiments": {
+    "current_prompt_plus_inputs": {
+      "description": "RBioBench current structured prompt with input data preview",
+      "total_tasks": 254,
+      "passed": 0,
+      "pass_at_1": 0.0,
+      "passed_tasks": []
+    },
+    "simple_prompt_plus_inputs": {
+      "description": "Simple human-style prompt with input data preview",
+      "total_tasks": 254,
+      "passed": 1,
+      "pass_at_1": 0.0039,
+      "passed_tasks": [
+        "pharmaverse/admiral/filter_exist"
+      ]
+    }
+  }
+}
