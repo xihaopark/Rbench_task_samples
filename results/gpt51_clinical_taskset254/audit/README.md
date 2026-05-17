@@ -38,6 +38,7 @@ Prompt/reference contract issues alone account for 38/50 audited samples. Includ
 ## Reports
 
 - `summary.md` - concise 50-sample audit summary and recommended fixes.
+- `simple_prompt_diagnostic_and_cleanup_guideline.md` - working guideline for interpreting the simple-prompt run and planning keep/repair/quarantine/delete cleanup for the 254 clinical tasks.
 - `current_results_and_eval_strategy.md` - frozen current result and proposed multi-layer evaluation policy.
 - `status_distribution_analysis.md` - current vs simple full-task status/tier distribution.
 - `contract_defect_analysis.md` - defect taxonomy with representative tasks and preflight checks.

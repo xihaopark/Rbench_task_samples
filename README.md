@@ -78,6 +78,7 @@ Start here:
 
 - [`audit/README.md`](results/gpt51_clinical_taskset254/audit/README.md)
 - [`audit/summary.md`](results/gpt51_clinical_taskset254/audit/summary.md)
+- [`audit/simple_prompt_diagnostic_and_cleanup_guideline.md`](results/gpt51_clinical_taskset254/audit/simple_prompt_diagnostic_and_cleanup_guideline.md)
 - [`audit/current_results_and_eval_strategy.md`](results/gpt51_clinical_taskset254/audit/current_results_and_eval_strategy.md)
 
 Detailed reports:
