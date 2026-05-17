@@ -1,0 +1,679 @@
+# Case 24 - `pharmaverse/aNCA/translate_terms`
+
+**Package:** `aNCA`  **Function:** `translate_terms`  **Expected artifacts:** `outputs/result.csv`
+
+**Current prompt status:** `FAIL` / tier `output_bad`  
+**Simple prompt status:** `FAIL` / tier `output_bad`  
+**Audit root cause:** `prompt_wrong`  **Confidence:** `High`
+
+## Audit Evidence
+
+Reference explicitly requires internal `aNCA:::translate_terms(...)`; current prompt says to call the "public aNCA routine `translate_terms`", and both runs produce nonempty outputs where reference `result.csv` is an empty one-column CSV (`ref=(0, 1)`).
+
+## Task Prompt From `task.json`
+
+```text
+Write R code to map free-text terms using a metadata table. Load `library(aNCA)` and `library(purrr)`.
+
+**Inputs:** `inputs/input_terms.tsv`, `inputs/mapping_col.tsv`, `inputs/target_col.tsv`, `inputs/metadata.tsv` — build `input_terms`, scalar column names `mapping_col` / `target_col`, and `metadata` data.frame.
+
+**Computation:** Call **`aNCA:::translate_terms(input_terms=, mapping_col=, target_col=, metadata=)`** (internal; not exported as `aNCA::translate_terms`).
+
+**Outputs:** The reference also writes `outputs/summary.csv`.
+
+**Required outputs for grading (exact paths):**
+- `outputs/result.csv`
+
+Create `outputs/` with `dir.create('outputs', showWarnings=FALSE)` if needed.
+For CSV use `write.csv(..., row.names=FALSE)` unless you must preserve row names to match the reference.
+
+```
+
+## Current Generated Prompt
+
+```text
+I am preparing an aNCA clinical pharmacokinetic support task for translate terms. The available input files are `inputs/input_terms.tsv`, `inputs/mapping_col.tsv`, `inputs/metadata.tsv`, `inputs/target_col.tsv`. Create an R script that reads each TSV with header preservation, treats one-row tables as scalar arguments when appropriate, and preserves row alignment across vector or table inputs. Required grading outputs are `outputs/result.csv`. The target operation is the public aNCA routine `translate_terms`; call it when it accepts the TSV-derived arguments, then normalize the result for grading. Keep the CSV output compact and inspectable; when an RDS artifact is required, write the full result object there as well. Create the outputs directory before writing files.
+
+## Inputs preview (no reference answers)
+
+### input_terms.tsv (33 bytes)
+input_terms
+AVAL
+AVISITN
+USUBJID
+
+### mapping_col.tsv (33 bytes)
+mapping_col
+AVAL
+AVISITN
+USUBJID
+
+### metadata.tsv (5939 bytes)
+USUBJID	STUDYID	PARAMCD	PARAM	AVAL	AVISITN	AVISIT	ADT	ANL01FL	BASE	CHG	PCHG	ABLFL
+CDISCPILOT01-01-701-1015	CDISCPILOT01	SYSBP	SYSBP (mmHg)	128.19	0	Baseline	2020-01-15	Y	127.23	0.96	0.7565	Y
+CDISCPILOT01-01-701-1015	CDISCPILOT01	SYSBP	SYSBP (mmHg)	127.46	4	Week 4	2020-02-15	Y	127.23	0.23	0.1827	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	SYSBP	SYSBP (mmHg)	123.23	12	Week 12	2020-04-15	Y	127.23	-4.0	-3.1421	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	DIABP	DIABP (mmHg)	75.56	0	Baseline	2020-01-15	Y	75.91	-0.35	-0.4631	Y
+CDISCPILOT01-01-701-1015	CDISCPILOT01	DIABP	DIABP (mmHg)	75.14	4	Week 4	2020-02-15	Y	75.91	-0.77	-1.0163	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	DIABP	DIABP (mmHg)	76.38	12	Week 12	2020-04-15	Y	75.91	0.47	0.6171	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	PULSE	PULSE (beats/min)	74.63	0	Baseline	2020-01-15	Y	74.7	-0.07	-0.0905	Y
+CDISCPILOT01-01-701-1015	CDISCPILOT01	PULSE	PULSE (beats/min)	71.53	4	Week 4	2020-02-15	Y	74.7	-3.17	-4.2406	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	PULSE	PULSE (beats/min)	73.47	12	Week 12	2020-04-15	Y	74.7	-1.23	-1.6435	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	SYSBP	SYSBP (mmHg)	118.41	0	Baseline	2020-01-15	Y	117.17	1.24	1.0603	Y
+CDISCPILOT01-01-701-1023	CDISCPILOT01	SYSBP	SYSBP (mmHg)	115.29	4	Week 4	2020-02-15	Y	117.17	-1.88	-1.6025	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	SYSBP	SYSBP (mmHg)	114.64	12	Week 12	2020-04-15	Y	117.17	-2.53	-2.1573	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	DIABP	DIABP (mmHg)	77.16	0	Baseline	2020-01-15	Y	75.1	2.06	2.7364	Y
+CDISCPILOT01-01-701-1023	CDISCPILOT01	DIABP	DIABP (mmHg)	77.52	4	Week 4	2020-02-15	Y	75.1	2.42	3.2157	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	DIABP	DIABP (mmHg)	75.76	12	Week 12	2020-04-15	Y	75.1	0.66	0.8723	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	PULSE	PULSE (beats/min)	102.78	0	Baseline	2020-01-15	Y	99.7	3.08	3.0903	Y
+CDISCPILOT01-01-701-1023	CDISCPILOT01	PULSE	PULSE (beats/min)	101.94	4	Week 4	2020-02-15	Y	99.7	2.24	2.2478	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	PULSE	PULSE (beats/min)	99.82	12	Week 12	2020-04-15	Y	99.7	0.12	0.1214	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	SYSBP	SYSBP (mmHg)	114.9	0	Baseline	2020-01-15	Y	114.65	0.25	0.2158	Y
+CDISCPILOT01-01-701-1028	CDISCPILOT01	SYSBP	SYSBP (mmHg)	116.93	4	Week 4	2020-02-15	Y	114.65	2.28	1.9863	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	SYSBP	SYSBP (mmHg)	116.4	12	Week 12	2020-04-15	Y	114.65	1.75	1.5241	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	DIABP	DIABP (mmHg)	64.75	0	Baseline	2020-01-15	Y	64.64	0.11	0.1651	Y
+CDISCPILOT01-01-701-1028	CDISCPILOT01	DIABP	DIABP (mmHg)	62.96	4	Week 4	2020-02-15	Y	64.64	-1.68	-2.6039	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	DIABP	DIABP (mmHg)	63.12	12	Week 12	2020-04-15	Y	64.64	-1.52	-2.3564	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	PULSE	PULSE (beats/min)	77.65	0	Baseline	2020-01-15	Y	73.37	4.28	5.8303	Y
+CDISCPILOT01-01-701-1028	CDISCPILOT01	PULSE	PULSE (beats/min)	75.35	4	Week 4	2020-02-15	Y	73.37	1.98	2.6956	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	PULSE	PULSE (beats/min)	74.98	12	Week 12	2020-04-15	Y	73.37	1.61	2.1913	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	SYSBP	SYSBP (mmHg)	130.95	0	Baseline	2020-01-15	Y	127.31	3.64	2.8582	Y
+CDISCPILOT01-01-701-1033	CDISCPILOT01	SYSBP	SYSBP (mmHg)	127.92	4	Week 4	2020-02-15	Y	127.31	0.61	0.4782	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	SYSBP	SYSBP (mmHg)	130.24	12	Week 12	2020-04-15	Y	127.31	2.93	2.3005	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	DIABP	DIABP (mmHg)	75.07	0	Baseline	2020-01-15	Y	74.06	1.01	1.3703	Y
+CDISCPILOT01-01-701-1033	CDISCPILOT01	DIABP	DIABP (mmHg)	73.78	4	Week 4	2020-02-15	Y	74.06	-0.28	-0.3716	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	DIABP	DIABP (mmHg)	75.88	12	Week 12	2020-04-15	Y	74.06	1.82	2.4641	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	PULSE	PULSE (beats/min)	70.98	0	Baseline	2020-01-15	Y	71.61	-0.63	-0.8808	Y
+CDISCPILOT01-01-701-1033	CDISCPILOT01	PULSE	PULSE (beats/min)	72.26	4	Week 4	2020-02-15	Y	71.61	0.65	0.9067	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	PULSE	PULSE (beats/min)	63.97	12	Week 12	2020-04-15	Y	71.61	-7.64	-10.6698	
+CDISCPILOT01-01-701-1034	CDISCPILOT01	SYSBP	SYSBP (mmHg)	129.17	0	Baseline	2020-01-15	Y	128.51	0.66	0.5132	Y
+CDISCPILOT01-01-701-1034	CDISCPILOT01	SYSBP	SYSBP (mmHg)	128.83	4	Week 4	2020-02-15	Y	128.51	0.32	0.2487	
+CDISCPILOT01-01-701-1034	CDISCPILOT01	SYSBP	SYSBP (mmHg)	126.05	12	Week 12	2020-04-15	Y	128.51	-2.46	-1.9146	
+... [15 more lines omitted]
+
+### target_col.tsv (24 bytes)
+arg
+2020-01-15T08:30:00
+
+```
+
+## Simple Generated Prompt
+
+```text
+Create R script to perform translate terms using the aNCA clinical task contract.
+
+Input: input_terms.tsv, mapping_col.tsv, metadata.tsv, target_col.tsv
+Output: result.csv
+
+Read files from inputs/ and write the required files under outputs/.
+
+## Inputs preview (no reference answers)
+
+### input_terms.tsv (33 bytes)
+input_terms
+AVAL
+AVISITN
+USUBJID
+
+### mapping_col.tsv (33 bytes)
+mapping_col
+AVAL
+AVISITN
+USUBJID
+
+### metadata.tsv (5939 bytes)
+USUBJID	STUDYID	PARAMCD	PARAM	AVAL	AVISITN	AVISIT	ADT	ANL01FL	BASE	CHG	PCHG	ABLFL
+CDISCPILOT01-01-701-1015	CDISCPILOT01	SYSBP	SYSBP (mmHg)	128.19	0	Baseline	2020-01-15	Y	127.23	0.96	0.7565	Y
+CDISCPILOT01-01-701-1015	CDISCPILOT01	SYSBP	SYSBP (mmHg)	127.46	4	Week 4	2020-02-15	Y	127.23	0.23	0.1827	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	SYSBP	SYSBP (mmHg)	123.23	12	Week 12	2020-04-15	Y	127.23	-4.0	-3.1421	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	DIABP	DIABP (mmHg)	75.56	0	Baseline	2020-01-15	Y	75.91	-0.35	-0.4631	Y
+CDISCPILOT01-01-701-1015	CDISCPILOT01	DIABP	DIABP (mmHg)	75.14	4	Week 4	2020-02-15	Y	75.91	-0.77	-1.0163	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	DIABP	DIABP (mmHg)	76.38	12	Week 12	2020-04-15	Y	75.91	0.47	0.6171	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	PULSE	PULSE (beats/min)	74.63	0	Baseline	2020-01-15	Y	74.7	-0.07	-0.0905	Y
+CDISCPILOT01-01-701-1015	CDISCPILOT01	PULSE	PULSE (beats/min)	71.53	4	Week 4	2020-02-15	Y	74.7	-3.17	-4.2406	
+CDISCPILOT01-01-701-1015	CDISCPILOT01	PULSE	PULSE (beats/min)	73.47	12	Week 12	2020-04-15	Y	74.7	-1.23	-1.6435	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	SYSBP	SYSBP (mmHg)	118.41	0	Baseline	2020-01-15	Y	117.17	1.24	1.0603	Y
+CDISCPILOT01-01-701-1023	CDISCPILOT01	SYSBP	SYSBP (mmHg)	115.29	4	Week 4	2020-02-15	Y	117.17	-1.88	-1.6025	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	SYSBP	SYSBP (mmHg)	114.64	12	Week 12	2020-04-15	Y	117.17	-2.53	-2.1573	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	DIABP	DIABP (mmHg)	77.16	0	Baseline	2020-01-15	Y	75.1	2.06	2.7364	Y
+CDISCPILOT01-01-701-1023	CDISCPILOT01	DIABP	DIABP (mmHg)	77.52	4	Week 4	2020-02-15	Y	75.1	2.42	3.2157	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	DIABP	DIABP (mmHg)	75.76	12	Week 12	2020-04-15	Y	75.1	0.66	0.8723	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	PULSE	PULSE (beats/min)	102.78	0	Baseline	2020-01-15	Y	99.7	3.08	3.0903	Y
+CDISCPILOT01-01-701-1023	CDISCPILOT01	PULSE	PULSE (beats/min)	101.94	4	Week 4	2020-02-15	Y	99.7	2.24	2.2478	
+CDISCPILOT01-01-701-1023	CDISCPILOT01	PULSE	PULSE (beats/min)	99.82	12	Week 12	2020-04-15	Y	99.7	0.12	0.1214	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	SYSBP	SYSBP (mmHg)	114.9	0	Baseline	2020-01-15	Y	114.65	0.25	0.2158	Y
+CDISCPILOT01-01-701-1028	CDISCPILOT01	SYSBP	SYSBP (mmHg)	116.93	4	Week 4	2020-02-15	Y	114.65	2.28	1.9863	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	SYSBP	SYSBP (mmHg)	116.4	12	Week 12	2020-04-15	Y	114.65	1.75	1.5241	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	DIABP	DIABP (mmHg)	64.75	0	Baseline	2020-01-15	Y	64.64	0.11	0.1651	Y
+CDISCPILOT01-01-701-1028	CDISCPILOT01	DIABP	DIABP (mmHg)	62.96	4	Week 4	2020-02-15	Y	64.64	-1.68	-2.6039	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	DIABP	DIABP (mmHg)	63.12	12	Week 12	2020-04-15	Y	64.64	-1.52	-2.3564	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	PULSE	PULSE (beats/min)	77.65	0	Baseline	2020-01-15	Y	73.37	4.28	5.8303	Y
+CDISCPILOT01-01-701-1028	CDISCPILOT01	PULSE	PULSE (beats/min)	75.35	4	Week 4	2020-02-15	Y	73.37	1.98	2.6956	
+CDISCPILOT01-01-701-1028	CDISCPILOT01	PULSE	PULSE (beats/min)	74.98	12	Week 12	2020-04-15	Y	73.37	1.61	2.1913	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	SYSBP	SYSBP (mmHg)	130.95	0	Baseline	2020-01-15	Y	127.31	3.64	2.8582	Y
+CDISCPILOT01-01-701-1033	CDISCPILOT01	SYSBP	SYSBP (mmHg)	127.92	4	Week 4	2020-02-15	Y	127.31	0.61	0.4782	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	SYSBP	SYSBP (mmHg)	130.24	12	Week 12	2020-04-15	Y	127.31	2.93	2.3005	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	DIABP	DIABP (mmHg)	75.07	0	Baseline	2020-01-15	Y	74.06	1.01	1.3703	Y
+CDISCPILOT01-01-701-1033	CDISCPILOT01	DIABP	DIABP (mmHg)	73.78	4	Week 4	2020-02-15	Y	74.06	-0.28	-0.3716	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	DIABP	DIABP (mmHg)	75.88	12	Week 12	2020-04-15	Y	74.06	1.82	2.4641	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	PULSE	PULSE (beats/min)	70.98	0	Baseline	2020-01-15	Y	71.61	-0.63	-0.8808	Y
+CDISCPILOT01-01-701-1033	CDISCPILOT01	PULSE	PULSE (beats/min)	72.26	4	Week 4	2020-02-15	Y	71.61	0.65	0.9067	
+CDISCPILOT01-01-701-1033	CDISCPILOT01	PULSE	PULSE (beats/min)	63.97	12	Week 12	2020-04-15	Y	71.61	-7.64	-10.6698	
+CDISCPILOT01-01-701-1034	CDISCPILOT01	SYSBP	SYSBP (mmHg)	129.17	0	Baseline	2020-01-15	Y	128.51	0.66	0.5132	Y
+CDISCPILOT01-01-701-1034	CDISCPILOT01	SYSBP	SYSBP (mmHg)	128.83	4	Week 4	2020-02-15	Y	128.51	0.32	0.2487	
+CDISCPILOT01-01-701-1034	CDISCPILOT01	SYSBP	SYSBP (mmHg)	126.05	12	Week 12	2020-04-15	Y	128.51	-2.46	-1.9146	
+... [15 more lines omitted]
+
+### target_col.tsv (24 bytes)
+arg
+2020-01-15T08:30:00
+
+```
+
+## Actual Input Files
+
+**`input_terms.tsv`**
+
+```tsv
+input_terms
+"item1"
+"item2"
+"item3"
+"item4"
+"item5"
+
+```
+
+**`mapping_col.tsv`**
+
+```tsv
+mapping_col
+"yes"
+"no"
+"true"
+"false"
+"active"
+
+```
+
+**`metadata.tsv`**
+
+```tsv
+id	value	group	category
+1	10.5	A	Type1
+2	20.3	B	Type2
+3	30.7	A	Type1
+4	40.2	B	Type2
+5	50.9	A	Type1
+
+```
+
+**`target_col.tsv`**
+
+```tsv
+target_col
+"yes"
+"no"
+"true"
+"false"
+"active"
+
+```
+
+## Reference Output Files
+
+**`result.csv`**
+
+```csv
+""
+
+```
+
+**`summary.csv`**
+
+```csv
+"n_rows","n_cols","col_names"
+0,0,""
+
+```
+
+## Reference Code
+
+**`solution.R`**
+
+```r
+suppressPackageStartupMessages(library(aNCA))
+suppressPackageStartupMessages(library(purrr))
+
+
+# 1. 读取输入数据 / Read input data
+input_terms_path <- file.path("inputs", "input_terms.tsv")
+if (!file.exists(input_terms_path)) {
+  stop("input_terms.tsv is required input")
+}
+input_terms_df <- read.delim(input_terms_path, check.names = FALSE, stringsAsFactors = FALSE)
+input_terms <- input_terms_df$input_terms
+mapping_col_path <- file.path("inputs", "mapping_col.tsv")
+if (!file.exists(mapping_col_path)) {
+  stop("mapping_col.tsv is required input")
+}
+mapping_col_df <- read.delim(mapping_col_path, check.names = FALSE, stringsAsFactors = FALSE)
+mapping_col <- mapping_col_df$mapping_col
+target_col_path <- file.path("inputs", "target_col.tsv")
+if (!file.exists(target_col_path)) {
+  stop("target_col.tsv is required input")
+}
+target_col_df <- read.delim(target_col_path, check.names = FALSE, stringsAsFactors = FALSE)
+target_col <- target_col_df$target_col
+metadata_path <- file.path("inputs", "metadata.tsv")
+if (!file.exists(metadata_path)) {
+  stop("metadata.tsv is required input")
+}
+metadata <- read.delim(metadata_path, check.names = FALSE, stringsAsFactors = FALSE)
+
+# 2. 数据验证 / Data validation
+# 检查数据框的基本结构
+for (df_name in c("metadata")) {
+  df <- get(df_name)
+  if (nrow(df) == 0) {
+    stop(paste("Data frame", df_name, "is empty"))
+  }
+    if (ncol(df) == 0) {
+      stop(paste("Data frame", df_name, "has no columns"))
+    }
+}
+
+# 3. 执行函数实现 / Execute function implementation
+# 提取标量参数
+if (is.data.frame(mapping_col) && ncol(mapping_col) > 0 && nrow(mapping_col) > 0) {
+  mapping_col <- mapping_col[[1]][1]
+} else if (is.character(mapping_col)) {
+  mapping_col <- mapping_col[1]
+}
+if (is.data.frame(target_col) && ncol(target_col) > 0 && nrow(target_col) > 0) {
+  target_col <- target_col[[1]][1]
+} else if (is.character(target_col)) {
+  target_col <- target_col[1]
+}
+
+result <- tryCatch({
+  aNCA:::translate_terms(
+    input_terms = input_terms,
+    mapping_col = mapping_col,
+    target_col = target_col,
+    metadata = metadata
+  )
+}, error = function(e) {
+  # 如果函数调用失败，返回NULL
+  NULL
+})
+
+
+# 4. 创建结果数据框 / Create result dataframe
+# 将函数结果与输入数据合并（如果可能）
+if (is.vector(result) || is.numeric(result) || is.character(result)) {
+  result_df <- data.frame(
+    input_terms = input_terms, mapping_col = mapping_col,
+    result = result,
+    stringsAsFactors = FALSE)
+  } else if (is.data.frame(result)) {
+  result_df <- result
+} else {
+  result_df <- data.frame(result = result, stringsAsFactors = FALSE)
+}
+
+# 5. 生成汇总统计 / Generate summary statistics
+if (is.data.frame(result_df)) {
+  summary_stats <- data.frame(
+    n_rows = nrow(result_df),
+    n_cols = ncol(result_df),
+    col_names = paste(colnames(result_df), collapse = ", "),
+    stringsAsFactors = FALSE)
+  } else if (is.vector(result) || is.numeric(result)) {
+  summary_stats <- data.frame(
+    n_values = length(result),
+    mean_value = mean(result, na.rm = TRUE),
+    min_value = min(result, na.rm = TRUE),
+    max_value = max(result, na.rm = TRUE),
+    median_value = median(result, na.rm = TRUE),
+    stringsAsFactors = FALSE)
+  } else {
+  summary_stats <- data.frame(
+    result_type = class(result)[1],
+    stringsAsFactors = FALSE
+  )
+}
+
+# 6. 保存输出 / Save outputs
+outputs_dir <- "outputs"
+dir.create(outputs_dir, showWarnings = FALSE)
+if (exists("result_df") && is.data.frame(result_df)) {
+  write.csv(result_df, file.path(outputs_dir, "result.csv"), row.names = FALSE)
+  } else if (exists("result")) {
+  if (is.data.frame(result)) {
+    write.csv(result, file.path(outputs_dir, "result.csv"), row.names = FALSE)
+  } else if (is.list(result)) {
+    saveRDS(result, file.path(outputs_dir, "result.rds"))
+  } else if (is.vector(result) || is.numeric(result) || is.character(result)) {
+    result_df <- data.frame(result = result, stringsAsFactors = FALSE)
+    write.csv(result_df, file.path(outputs_dir, "result.csv"), row.names = FALSE)
+  } else {
+    saveRDS(result, file.path(outputs_dir, "result.rds"))
+  }
+} else {
+  stop("No result variable found. Function implementation may not have returned a value.")
+}
+if (exists("summary_stats")) {
+  write.csv(summary_stats, file.path(outputs_dir, "summary.csv"), row.names = FALSE)
+}
+```
+
+## Current Prompt LLM Code
+
+```r
+#!/usr/bin/env Rscript
+
+# aNCA translate_terms support script
+
+suppressPackageStartupMessages({
+  library(readr)
+  library(dplyr)
+})
+
+# Load aNCA package (adjust if namespace differs)
+suppressPackageStartupMessages({
+  library(aNCA)
+})
+
+# Create outputs directory
+if (!dir.exists("outputs")) dir.create("outputs", recursive = TRUE)
+
+#-----------------------
+# Read inputs
+#-----------------------
+
+# input_terms.tsv: vector of input terms
+input_terms_df <- read_tsv(
+  "inputs/input_terms.tsv",
+  col_types = cols(.default = col_character())
+)
+input_terms <- input_terms_df[[1]]
+
+# mapping_col.tsv: vector of mapping columns
+mapping_col_df <- read_tsv(
+  "inputs/mapping_col.tsv",
+  col_types = cols(.default = col_character())
+)
+mapping_col <- mapping_col_df[[1]]
+
+# metadata.tsv: main metadata table
+metadata <- read_tsv(
+  "inputs/metadata.tsv",
+  col_types = cols(.default = col_character())
+)
+
+# target_col.tsv: scalar or vector argument
+target_col_df <- read_tsv(
+  "inputs/target_col.tsv",
+  col_types = cols(.default = col_character())
+)
+# Treat one-row table (excluding header) as scalar; otherwise vector
+if (nrow(target_col_df) == 1L) {
+  target_col <- target_col_df[[1]][1]
+} else {
+  target_col <- target_col_df[[1]]
+}
+
+#-----------------------
+# Call translate_terms
+#-----------------------
+
+res <- translate_terms(
+  input_terms   = input_terms,
+  mapping_col   = mapping_col,
+  metadata      = metadata,
+  target_col    = target_col
+)
+
+#-----------------------
+# Normalize result
+#-----------------------
+
+# For grading, create a compact, inspectable CSV.
+# If result is not a data.frame, coerce to tibble first.
+res_tbl <-
+  if (is.data.frame(res)) {
+    as_tibble(res)
+  } else if (is.vector(res) && !is.list(res)) {
+    tibble::tibble(value = res)
+  } else {
+    # For lists or other structures, flatten to character
+    tibble::tibble(value = I(list(res)))
+  }
+
+#-----------------------
+# Write outputs
+#-----------------------
+
+# Full object as RDS (if required by harness)
+saveRDS(res, file = "outputs/result.rds")
+
+# Compact CSV for grading
+write_csv(res_tbl, "outputs/result.csv")
+```
+
+## Current Prompt Execution Logs
+
+**`stderr.txt`**
+
+```text
+[RBioBench Library Aliases] Library aliasing disabled (using stub layer)
+[Admiraldev Stub] Created admiraldev namespace with 10 stub functions
+[RBioBench Stub Layer] Loaded admiraldev stubs
+[aNCA Stub] Created aNCA namespace with 57 stub functions
+[RBioBench Stub Layer] Loaded aNCA stubs
+[Logrx Stub] Created logrx namespace with 2 stub functions
+[RBioBench Stub Layer] Loaded logrx stubs
+[Sdtmchecks Stub] Created sdtmchecks namespace with 2 stub functions
+[RBioBench Stub Layer] Loaded sdtmchecks stubs
+[Other Stubs] Registered 5 stub functions from 5 packages
+[RBioBench Stub Layer] Loaded other package stubs
+[RBioBench Stub Layer] Registered attach hook for admiral
+[Admiral Stub] Injected 40 functions into admiral namespace
+[Admiral Stub] Injected 40 functions into admiral namespace
+[RBioBench Stub Layer] Stubs registered in admiral namespace
+[Admiral Stub] Injected 40 functions into admiral namespace
+[Admiral Stub] Injected 40 functions into admiral namespace
+[RBioBench Stub Layer] Stubs registered in admiral namespace
+[RBioBench Stub Layer] .Rprofile loaded. Stubs will be auto-injected when admiral loads.
+
+```
+
+**`stdout.txt`**
+
+```text
+
+```
+
+## Current Prompt Output Files
+
+**`result.csv`**
+
+```csv
+value
+"list(status = ""success"", message = ""translate_terms stub"", timestamp = 1779019761.97944)"
+
+```
+
+**`result.rds`**
+
+```text
+[binary artifact: result.rds, 172 bytes]
+```
+
+## Simple Prompt LLM Code
+
+```r
+#!/usr/bin/env Rscript
+
+suppressPackageStartupMessages({
+  library(readr)
+  library(dplyr)
+  library(stringr)
+  library(tidyr)
+})
+
+in_dir  <- "inputs"
+out_dir <- "outputs"
+if (!dir.exists(out_dir)) dir.create(out_dir, recursive = TRUE)
+
+input_terms_path <- file.path(in_dir, "input_terms.tsv")
+mapping_col_path <- file.path(in_dir, "mapping_col.tsv")
+metadata_path    <- file.path(in_dir, "metadata.tsv")
+target_col_path  <- file.path(in_dir, "target_col.tsv")
+
+input_terms <- read_tsv(input_terms_path, show_col_types = FALSE)
+mapping_col <- read_tsv(mapping_col_path, show_col_types = FALSE)
+metadata    <- read_tsv(metadata_path, show_col_types = FALSE)
+target_col  <- read_tsv(target_col_path, show_col_types = FALSE)
+
+terms <- input_terms[[1]]
+mapping_vars <- mapping_col[[1]]
+
+# For this task, we assume that terms refer to column names in metadata
+available_cols <- colnames(metadata)
+
+result <- tibble(
+  input_term   = terms,
+  mapped_col   = ifelse(terms %in% mapping_vars, terms, NA_character_),
+  exists_in_metadata = terms %in% available_cols
+)
+
+# Attach simple metadata about each mapped column if present
+meta_info <- tibble(
+  mapped_col = intersect(result$mapped_col, available_cols)
+) %>%
+  mutate(
+    example_value = purrr::map_chr(
+      mapped_col,
+      ~ as.character(metadata[[.x]][[1]])
+    )
+  )
+
+result_final <- result %>%
+  left_join(meta_info, by = "mapped_col") %>%
+  mutate(
+    translation_status = case_when(
+      is.na(mapped_col) ~ "not_mapped",
+      !exists_in_metadata ~ "mapped_missing_in_metadata",
+      TRUE ~ "mapped"
+    )
+  )
+
+write_csv(result_final, file.path(out_dir, "result.csv"))
+```
+
+## Simple Prompt Execution Logs
+
+**`stderr.txt`**
+
+```text
+[RBioBench Library Aliases] Library aliasing disabled (using stub layer)
+[Admiraldev Stub] Created admiraldev namespace with 10 stub functions
+[RBioBench Stub Layer] Loaded admiraldev stubs
+[aNCA Stub] Created aNCA namespace with 57 stub functions
+[RBioBench Stub Layer] Loaded aNCA stubs
+[Logrx Stub] Created logrx namespace with 2 stub functions
+[RBioBench Stub Layer] Loaded logrx stubs
+[Sdtmchecks Stub] Created sdtmchecks namespace with 2 stub functions
+[RBioBench Stub Layer] Loaded sdtmchecks stubs
+[Other Stubs] Registered 5 stub functions from 5 packages
+[RBioBench Stub Layer] Loaded other package stubs
+[RBioBench Stub Layer] Registered attach hook for admiral
+[Admiral Stub] Injected 40 functions into admiral namespace
+[Admiral Stub] Injected 40 functions into admiral namespace
+[RBioBench Stub Layer] Stubs registered in admiral namespace
+[Admiral Stub] Injected 40 functions into admiral namespace
+[Admiral Stub] Injected 40 functions into admiral namespace
+[RBioBench Stub Layer] Stubs registered in admiral namespace
+[RBioBench Stub Layer] .Rprofile loaded. Stubs will be auto-injected when admiral loads.
+
+```
+
+**`stdout.txt`**
+
+```text
+
+```
+
+## Simple Prompt Output Files
+
+**`result.csv`**
+
+```csv
+input_term,mapped_col,exists_in_metadata,example_value,translation_status
+AVAL,AVAL,TRUE,128.19,mapped
+AVISITN,AVISITN,TRUE,0,mapped
+USUBJID,USUBJID,TRUE,CDISCPILOT01-01-701-1015,mapped
+
+```
+
+## Evaluation Records
+
+### Current Prompt
+
+```json
+{
+  "task_id": "pharmaverse/aNCA/translate_terms",
+  "status": "FAIL",
+  "pass": false,
+  "score": 0.0,
+  "message": "Failed at case_embedded",
+  "case": "case_embedded",
+  "case_status": "FAIL",
+  "tier": "output_bad",
+  "returncode": 0,
+  "comparison": {
+    "result.csv": {
+      "match": false,
+      "tier": "output_bad",
+      "reason": "Shape mismatch: ref=(0, 1) vs llm=(1, 1)"
+    },
+    "summary.csv": {
+      "match": false,
+      "tier": "output_bad",
+      "reason": "File not generated"
+    }
+  },
+  "normalizations": []
+}
+```
+
+### Simple Prompt
+
+```json
+{
+  "task_id": "pharmaverse/aNCA/translate_terms",
+  "status": "FAIL",
+  "pass": false,
+  "score": 0.0,
+  "message": "Failed at case_embedded",
+  "case": "case_embedded",
+  "case_status": "FAIL",
+  "tier": "output_bad",
+  "returncode": 0,
+  "comparison": {
+    "result.csv": {
+      "match": false,
+      "tier": "output_bad",
+      "reason": "Shape mismatch: ref=(0, 1) vs llm=(3, 5)"
+    },
+    "summary.csv": {
+      "match": false,
+      "tier": "output_bad",
+      "reason": "File not generated"
+    }
+  },
+  "normalizations": []
+}
+```

@@ -27,6 +27,10 @@ In a deterministic 50-task sample, failures were mostly benchmark/prompt/data co
 
 Prompt/reference contract issues alone account for 38/50 audited samples. Including data/fixture issues, benchmark-side issues account for 44/50.
 
+## Rich Case Pages
+
+- `../cases/README.md` - index of 50 expanded case pages with actual inputs, reference outputs, generated outputs, execution logs, evaluation records, and audit evidence.
+
 ## Reports
 
 - `summary.md` - concise 50-sample audit summary and recommended fixes.

@@ -55,6 +55,14 @@ A deterministic 50-task sample was reviewed manually with subagents. The audit i
 
 Prompt/reference contract issues alone account for 38/50 audited samples. Including data/fixture issues, benchmark-side issues account for 44/50.
 
+## Rich Case Reviews
+
+The richer per-case pages are here:
+
+- [`cases/README.md`](results/gpt51_clinical_taskset254/cases/README.md)
+
+Each sampled case page includes the task prompt, actual input files, reference output files, reference code, current/simple generated code, execution logs, generated output files, compact evaluation records, and audit root-cause evidence.
+
 ## Audit Reports
 
 Start here:
