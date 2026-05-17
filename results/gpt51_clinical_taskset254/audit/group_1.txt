@@ -1,0 +1,10 @@
+01	pharmaverse/aNCA/get_conversion_factor	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/get_conversion_factor
+02	pharmaverse/aNCA/g_pkcg03_log	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/g_pkcg03_log
+03	pharmaverse/admiral/convert_special_cases	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/convert_special_cases
+04	pharmaverse/tidytlg/check_file	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/tidytlg/check_file
+05	pharmaverse/tidytlg/check_req_arg	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/tidytlg/check_req_arg
+06	pharmaverse/admiral/count_vals	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/count_vals
+07	pharmaverse/admiral/compute_age_years	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/compute_age_years
+08	pharmaverse/admiral/derive_vars_joined	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/derive_vars_joined
+09	pharmaverse/metatools/dash_to_eq	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/metatools/dash_to_eq
+10	pharmaverse/aNCA/add_exclusion_reasons	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/add_exclusion_reasons

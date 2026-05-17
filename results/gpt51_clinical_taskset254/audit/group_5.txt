@@ -1,0 +1,10 @@
+41	pharmaverse/admiral/derive_var_trtdurd	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/derive_var_trtdurd
+42	pharmaverse/admiral/assert_valid_queries	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/assert_valid_queries
+43	pharmaverse/admiraldev/assert_same_type	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiraldev/assert_same_type
+44	pharmaverse/admiraldev/assert_expr	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiraldev/assert_expr
+45	pharmaverse/admiraldev/assert_unit	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiraldev/assert_unit
+46	pharmaverse/aNCA/calculate_f	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/calculate_f
+47	pharmaverse/admiral/derive_vars_atc	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/derive_vars_atc
+48	pharmaverse/admiral/dthcaus_source	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/dthcaus_source
+49	pharmaverse/aNCA/create_qmd_doc	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/create_qmd_doc
+50	pharmaverse/tidytlg/add_indent	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/tidytlg/add_indent

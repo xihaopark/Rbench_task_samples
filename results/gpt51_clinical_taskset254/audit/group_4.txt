@@ -1,0 +1,10 @@
+31	pharmaverse/aNCA/g_pkcg01_log	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/g_pkcg01_log
+32	pharmaverse/admiral/derive_param_rr	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/derive_param_rr
+33	pharmaverse/admiral/slice_derivation	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/slice_derivation
+34	pharmaverse/gridify/gpar_args	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/gridify/gpar_args
+35	pharmaverse/ggsurvfit/scale_ggsurvfit	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/ggsurvfit/scale_ggsurvfit
+36	pharmaverse/aNCA/get_halflife_plots_single	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/get_halflife_plots_single
+37	pharmaverse/logrx/parse_log	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/logrx/parse_log
+38	pharmaverse/aNCA/g_pkcg02_lin	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/g_pkcg02_lin
+39	pharmaverse/admiral/get_imputation_targets	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/admiral/get_imputation_targets
+40	pharmaverse/aNCA/create_pptx_doc	tasks/releases/rbiobench_stable_v1/tracks/clinical_pilot/tasks/aNCA/create_pptx_doc
