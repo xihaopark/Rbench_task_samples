@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/admiral/get_imputation_target_time`
 - Package: `admiral`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `FAIL`
 - Failure stage: `value_mismatch`
 - Attribution bucket: `llm_error`

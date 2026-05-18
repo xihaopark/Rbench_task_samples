@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/aNCA/add_impute_method`
 - Package: `aNCA`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `FAIL`
 - Failure stage: `schema_mismatch`
 - Attribution bucket: `benchmark_or_prompt_issue`

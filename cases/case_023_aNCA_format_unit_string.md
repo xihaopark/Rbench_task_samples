@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/aNCA/format_unit_string`
 - Package: `aNCA`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `FAIL`
 - Failure stage: `schema_mismatch`
 - Attribution bucket: `llm_error`

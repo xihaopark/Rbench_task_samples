@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/aNCA/format_pkncadata_intervals`
 - Package: `aNCA`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `NO_OUTPUT`
 - Failure stage: `execution_failure`
 - Attribution bucket: `llm_error`

@@ -4,12 +4,9 @@
 
 - Task ID: `pharmaverse/admiral/filter_extreme`
 - Package: `admiral`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `PASS`
 - Failure stage: `pass`
-- Attribution bucket: `pass`
 
 ## Prompt
 

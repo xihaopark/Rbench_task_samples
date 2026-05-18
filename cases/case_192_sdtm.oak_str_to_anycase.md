@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/sdtm.oak/str_to_anycase`
 - Package: `sdtm.oak`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `FAIL`
 - Failure stage: `value_mismatch`
 - Attribution bucket: `llm_error`

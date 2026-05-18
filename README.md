@@ -23,7 +23,6 @@ Summary:
 ```text
 Total cases: 197
 Model: openai/gpt-5.1
-Prompt type: simple_prompt_plus_inputs
 Clean clinical strict pass@1: 62 / 197 = 0.3147
 ```
 

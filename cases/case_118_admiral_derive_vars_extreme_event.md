@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/admiral/derive_vars_extreme_event`
 - Package: `admiral`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `FAIL`
 - Failure stage: `value_mismatch`
 - Attribution bucket: `mixed_needs_review`

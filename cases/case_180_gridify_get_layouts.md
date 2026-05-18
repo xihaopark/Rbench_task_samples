@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/gridify/get_layouts`
 - Package: `gridify`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `NO_OUTPUT`
 - Failure stage: `execution_failure`
 - Attribution bucket: `mixed_needs_review`

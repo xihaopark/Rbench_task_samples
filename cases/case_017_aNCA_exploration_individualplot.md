@@ -4,9 +4,7 @@
 
 - Task ID: `pharmaverse/aNCA/exploration_individualplot`
 - Package: `aNCA`
-- Track: `clinical_pilot`
 - Model: `openai/gpt-5.1`
-- Prompt type: `simple_prompt_plus_inputs`
 - Status: `NO_OUTPUT`
 - Failure stage: `missing_artifact`
 - Attribution bucket: `benchmark_or_prompt_issue`
