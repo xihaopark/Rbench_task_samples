@@ -1,4 +1,4 @@
-# GPT-5.1 Clinical Clean Case Documents
+# RBench Clinic Study Tasks
 
 This repository contains one Markdown document per clinical benchmark case.
 
